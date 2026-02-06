@@ -466,7 +466,7 @@ onUnmounted(() => {
 }
 
 .category-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.625rem 1.25rem;
@@ -476,7 +476,7 @@ onUnmounted(() => {
   color: var(--text-secondary);
   font-size: 0.9rem;
   cursor: pointer;
-  white-space: nowrap;
+  max-width: 200px;
   transition: all 0.2s ease;
 }
 

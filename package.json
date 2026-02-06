@@ -3,13 +3,9 @@
   "version": "1.0.0",
   "description": "AFF链接管理系统 - Vue3纯前端实现",
   "type": "module",
-  "engines": {
-    "node": "18.x",
-    "npm": "9.x"
-  },
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {

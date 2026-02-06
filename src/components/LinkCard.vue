@@ -207,13 +207,15 @@ const visitLink = () => {
 }
 
 .category-badge {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.375rem 0.875rem;
   border-radius: 50px;
   font-size: 0.8rem;
   font-weight: 600;
+  max-width: 100%;
+  word-break: break-word;
 }
 
 .category-badge i {
