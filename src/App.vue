@@ -454,15 +454,9 @@ onUnmounted(() => {
   max-width: 1600px;
   margin: 0 auto;
   display: flex;
+  flex-wrap: wrap;
   gap: 0.75rem;
-  overflow-x: auto;
   padding-bottom: 0.5rem;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.category-scroll::-webkit-scrollbar {
-  display: none;
 }
 
 .category-btn {

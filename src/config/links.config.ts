@@ -23,23 +23,23 @@ export interface Category {
 }
 
 export const categories: Category[] = [
+  { id: 'btc', name: '虚拟币', icon: 'fa-bitcoin', color: '#F7931A' },
+  { id: 'vpn', name: 'VPN服务', icon: 'fa-vpn', color: '#00A86B' },
   { id: 'vps', name: 'VPS/服务器', icon: 'fa-server', color: '#FF6B6B' },
   { id: 'domain', name: '域名注册', icon: 'fa-globe', color: '#4ECDC4' },
   { id: 'cdn', name: 'CDN加速', icon: 'fa-bolt', color: '#45B7D1' },
-  { id: 'vpn', name: 'VPN服务', icon: 'fa-vpn', color: '#00A86B' },
   { id: 'cloud', name: '云服务', icon: 'fa-cloud', color: '#96CEB4' },
   { id: 'tool', name: '开发工具', icon: 'fa-tools', color: '#FFEAA7' },
   { id: 'finance', name: '金融服务', icon: 'fa-credit-card', color: '#DDA0DD' },
   { id: 'other', name: '其他推荐', icon: 'fa-star', color: '#98D8C8' },
   { id: 'video', name: '影视', icon: 'fa-question', color: '#FFD700' },
   { id: 'muzi', name: '爱喝水的木子', icon: 'fa-question', color: '#AA6347' },
-  { id: 'btc', name: '虚拟币', icon: 'fa-bitcoin', color: '#F7931A' },
 ];
 
 export const affLinks: AffLink[] = [
   // VPS/服务器类
   {
-    id: '1',
+    id: '12',
     title: 'DigitalOcean',
     description: '简单易用的云服务器平台，适合开发者和初创企业',
     url: 'https://m.do.co/c/98d0c1f8b37d',
@@ -52,7 +52,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-01-15'
   },
   {
-    id: '2',
+    id: '11',
     title: 'Vultr',
     description: '高性能云服务器，全球16个数据中心可选',
     url: 'https://www.vultr.com/?ref=9864425',
@@ -65,7 +65,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-01-10'
   },
   {
-    id: '3',
+    id: '10',
     title: 'racknerd',
     description: '老牌VPS服务商，稳定可靠，技术支持优秀',
     url: 'https://my.racknerd.com/aff.php?aff=13897',
@@ -80,7 +80,7 @@ export const affLinks: AffLink[] = [
   
   // 域名注册类
   {
-    id: '4',
+    id: '30',
     title: 'Namecheap',
     description: '性价比高的域名注册商，隐私保护免费',
     url: 'https://www.namecheap.com',
@@ -93,7 +93,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-01-20'
   },
   {
-    id: '5',
+    id: '29',
     title: 'Cloudflare Registrar',
     description: '成本价域名注册，无隐藏费用',
     url: 'https://www.cloudflare.com/products/registrar/',
@@ -108,7 +108,7 @@ export const affLinks: AffLink[] = [
   
   // CDN加速类
   {
-    id: '6',
+    id: '28',
     title: 'Cloudflare',
     description: '全球领先的CDN和安全服务提供商',
     url: 'https://www.cloudflare.com',
@@ -121,7 +121,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-01-12'
   },
   {
-    id: '7',
+    id: '27',
     title: 'KeyCDN',
     description: '高性能CDN服务，按用量付费',
     url: 'https://www.keycdn.com',
@@ -136,7 +136,7 @@ export const affLinks: AffLink[] = [
   
   // 云服务类
   {
-    id: '8',
+    id: '26',
     title: 'AWS',
     description: '亚马逊云服务，全球最全面的云平台',
     url: 'https://aws.amazon.com',
@@ -149,7 +149,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-01-25'
   },
   {
-    id: '9',
+    id: '25',
     title: '阿里云',
     description: '国内领先的云计算服务商',
     url: 'https://www.aliyun.com',
@@ -164,7 +164,7 @@ export const affLinks: AffLink[] = [
   
   // 开发工具类
   {
-    id: '10',
+    id: '24',
     title: 'JetBrains',
     description: '专业开发工具，IDE中的最佳选择',
     url: 'https://www.jetbrains.com',
@@ -177,7 +177,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-01-14'
   },
   {
-    id: '11',
+    id: '23',
     title: 'GitHub Pro',
     description: '全球最大的代码托管平台高级版',
     url: 'https://github.com/pricing',
@@ -192,7 +192,7 @@ export const affLinks: AffLink[] = [
   
   // 金融服务类
   {
-    id: '12',
+    id: '22',
     title: 'Payoneer',
     description: '全球支付平台，跨境收款首选',
     url: 'https://www.payoneer.com',
@@ -207,7 +207,7 @@ export const affLinks: AffLink[] = [
   
   // 其他推荐
   {
-    id: '13',
+    id: '21',
     title: 'Notion',
     description: '全能工作空间和笔记工具',
     url: 'https://www.notion.so',
@@ -220,7 +220,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-01-30'
   },
   {
-    id: '14',
+    id: '20',
     title: 'Figma',
     description: '专业的设计协作工具',
     url: 'https://www.figma.com',
@@ -234,7 +234,7 @@ export const affLinks: AffLink[] = [
   },
   // 影视类
   {
-    id: '15',
+    id: '19',
     title: 'Netflix',
     description: '全球领先的流媒体影视平台',
     url: 'https://www.netflix.com',
@@ -247,7 +247,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-02-05'
   },
   {
-    id: '16',
+    id: '18',
     title: '可可影视',
     description: '盗版影视平台',
     url: 'https://www.keke1.app/',
@@ -273,7 +273,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-02-05'
   },
   {
-    id: '18',
+    id: '16',
     title: '搜片网',
     description: '盗版影视平台',
     url: 'https://soupian.one/',
@@ -286,7 +286,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-02-05'
   },
   {
-    id: '19',
+    id: '15',
     title: '瀑布盘',
     description: '盗版影视平台',
     url: 'https://www.pbpan.com/',
@@ -299,7 +299,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-02-05'
   },
   {
-    id: '20',
+    id: '14',
     title: '抽象头像',
     description: '盗版影视平台',
     url: 'https://avatar.020417.xyz/',
@@ -312,7 +312,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-02-05'
   },
   {
-    id: '21',
+    id: '13',
     title: '爬虫题库',
     description: '爬虫题库',
     url: 'https://tiku.020417.xyz/',
@@ -325,7 +325,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-02-05'
   },
   {
-    id: '22',
+    id: '33',
     title: 'CTF工具箱',
     description: 'CTF工具箱',
     url: 'https://ctf.020417.xyz/',
@@ -338,7 +338,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-02-05'
   },
   {
-    id: '23',
+    id: '32',
     title: '开发者备忘手册',
     description: '开发者备忘手册',
     url: 'https://dev.020417.xyz/',
@@ -351,7 +351,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-02-05'
   },
   {
-    id: '24',
+    id: '31',
     title: 'linux终端命令手册',
     description: 'linux终端命令手册',
     url: 'https://linux.020417.xyz/',
@@ -364,7 +364,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-02-05'
   },
   {
-    id: '25',
+    id: '9',
     title: '微信公众号素材md渲染',
     description: '微信公众号素材md渲染',
     url: 'https://md.020417.xyz/',
@@ -377,7 +377,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-02-05'
   },
   {
-    id: '26',
+    id: '8',
     title: '每天60s新闻',
     description: '每天60s新闻',
     url: 'https://60.020417.xyz/',
@@ -390,7 +390,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-02-05'
   },
   {
-    id: '27',
+    id: '7',
     title: 'colocrossing',
     description: 'colocrossing vps 1年11刀',
     url: 'https://cloud.colocrossing.com/aff.php?aff=1191',
@@ -403,7 +403,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-02-05'
   },
   {
-    id: '28',
+    id: '6',
     title: 'sms接码平台',
     description: 'hero-sms 接码平台',
     url: 'https://hero-sms.com/?ref=380169',
@@ -416,7 +416,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-02-05'
   },
   {
-    id: '29',
+    id: '5',
     title: '欧易钱包',
     description: '欧易钱包',
     url: 'https://www.oyuzh.life/zh-hans/join/52391770?shortCode=YbU25D',
@@ -429,7 +429,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-02-05'
   },
   {
-    id: '30',
+    id: '4',
     title: 'bigme',
     description: 'bigme VPN服务',
     url: 'https://app.bigme.online/user#/register?code=ZTrIUOBr',
@@ -442,7 +442,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-02-05'
   },
   {
-    id: '31',
+    id: '3',
     title: 'bitget',
     description: 'bitget btc交易平台',
     url: 'https://share.glassgs.com/u/XG07JNPM',
@@ -455,7 +455,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-02-05'
   },
   {
-    id: '32',
+    id: '2',
     title: '币安',
     description: '币安 btc交易平台',
     url: 'https://www.bsmkweb.com/referral/earn-together/refer2earn-usdc/claim?hl=zh-CN&ref=GRO_28502_NVR0P&utm_source=default',
@@ -468,7 +468,7 @@ export const affLinks: AffLink[] = [
     createdAt: '2024-02-05'
   },
   {
-    id: '33',
+    id: '1',
     title: '澳门蚂蚁',
     description: '澳门蚂蚁 开卡存3000港币送2股阿里巴巴港股',
     url: 'https://m.antbank.mo/s/j1tDQ',
