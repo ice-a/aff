@@ -1,91 +1,175 @@
 <template>
   <div class="quick-access">
-    <button 
-      class="quick-btn"
-      @click="showQuickPanel = true"
-      title="快速访问"
+    <!-- 触发按钮 -->
+    <button
+      class="quick-access__trigger"
+      @click="togglePanel"
+      :aria-label="showPanel ? '关闭快速访问' : '打开快速访问'"
     >
-      <i class="fas fa-bolt"></i>
+      <i :class="['fas', showPanel ? 'fa-times' : 'fa-bolt']"></i>
     </button>
-    
-    <transition name="slide-left">
-      <div v-if="showQuickPanel" class="quick-panel" @click.self="showQuickPanel = false">
-        <div class="quick-panel-content">
-          <div class="quick-header">
-            <h3><i class="fas fa-bolt"></i> 快速访问</h3>
-            <button class="close-btn" @click="showQuickPanel = false">
+
+    <!-- 快速访问面板 -->
+    <Transition name="slide-in">
+      <div v-if="showPanel" class="quick-access__panel">
+        <div class="quick-access__header">
+          <h3 class="quick-access__title">
+            <i class="fas fa-bolt"></i>
+            快速访问
+          </h3>
+          <button
+            class="quick-access__close"
+            @click="closePanel"
+            aria-label="关闭面板"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <div class="quick-access__content">
+          <!-- 最近访问 -->
+          <section class="quick-access__section">
+            <h4 class="quick-access__section-title">
+              <i class="fas fa-history"></i>
+              最近访问
+            </h4>
+            <div class="quick-links">
+              <a
+                v-for="link in recentLinks"
+                :key="link.id"
+                :href="link.url"
+                target="_blank"
+                class="quick-link"
+                @click="recordVisit(link)"
+              >
+                <i :class="['fas', link.icon || 'fa-link']" :style="{ color: link.color }"></i>
+                <span class="quick-link__title">{{ link.title }}</span>
+                <span class="quick-link__category">{{ getCategoryName(link.category) }}</span>
+              </a>
+              <div v-if="recentLinks.length === 0" class="quick-links__empty">
+                <i class="fas fa-inbox"></i>
+                <span>暂无访问记录</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- 热门推荐 -->
+          <section class="quick-access__section">
+            <h4 class="quick-access__section-title">
+              <i class="fas fa-fire"></i>
+              热门推荐
+            </h4>
+            <div class="quick-links">
+              <a
+                v-for="link in popularLinks"
+                :key="link.id"
+                :href="link.url"
+                target="_blank"
+                class="quick-link"
+                @click="recordVisit(link)"
+              >
+                <i :class="['fas', link.icon || 'fa-link']" :style="{ color: link.color }"></i>
+                <div class="quick-link__info">
+                  <span class="quick-link__title">{{ link.title }}</span>
+                  <span class="quick-link__category">{{ getCategoryName(link.category) }}</span>
+                </div>
+                <span class="quick-link__count">{{ link.clicks }}次</span>
+              </a>
+            </div>
+          </section>
+
+          <!-- 快捷操作 -->
+          <section class="quick-access__section">
+            <h4 class="quick-access__section-title">
+              <i class="fas fa-cog"></i>
+              快捷操作
+            </h4>
+            <div class="quick-actions">
+              <button class="quick-action" @click="exportData">
+                <i class="fas fa-download"></i>
+                <span>导出数据</span>
+              </button>
+              <button class="quick-action" @click="importData">
+                <i class="fas fa-upload"></i>
+                <span>导入数据</span>
+              </button>
+              <button class="quick-action" @click="clearStats">
+                <i class="fas fa-trash-alt"></i>
+                <span>清除统计</span>
+              </button>
+              <button class="quick-action" @click="showStats">
+                <i class="fas fa-chart-bar"></i>
+                <span>查看统计</span>
+              </button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </Transition>
+
+    <!-- 统计弹窗 -->
+    <Transition name="fade">
+      <div v-if="showStatsModal" class="stats-modal" @click="showStatsModal = false">
+        <div class="stats-modal__content" @click.stop>
+          <div class="stats-modal__header">
+            <h3>访问统计</h3>
+            <button class="stats-modal__close" @click="showStatsModal = false">
               <i class="fas fa-times"></i>
             </button>
           </div>
-          
-          <!-- 最近访问 -->
-          <div class="quick-section">
-            <h4><i class="fas fa-history"></i> 最近访问</h4>
-            <div class="quick-links">
-              <a 
-                v-for="link in recentLinks" 
-                :key="link.id"
-                :href="link.url"
-                target="_blank"
-                class="quick-link"
-              >
-                <i :class="['fas', link.icon || 'fa-link']" :style="{ color: link.color }"></i>
-                <span>{{ link.title }}</span>
-              </a>
-              <p v-if="recentLinks.length === 0" class="empty-text">
-                还没有访问记录
-              </p>
+          <div class="stats-modal__body">
+            <div class="stats-grid">
+              <div class="stat-card">
+                <i class="fas fa-link"></i>
+                <div class="stat-info">
+                  <span class="stat-value">{{ totalLinks }}</span>
+                  <span class="stat-label">总链接数</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <i class="fas fa-mouse-pointer"></i>
+                <div class="stat-info">
+                  <span class="stat-value">{{ totalClicks }}</span>
+                  <span class="stat-label">总点击量</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <i class="fas fa-history"></i>
+                <div class="stat-info">
+                  <span class="stat-value">{{ recentLinks.length }}</span>
+                  <span class="stat-label">最近访问</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <i class="fas fa-fire"></i>
+                <div class="stat-info">
+                  <span class="stat-value">{{ popularLinks.length }}</span>
+                  <span class="stat-label">热门推荐</span>
+                </div>
+              </div>
             </div>
-          </div>
-          
-          <!-- 热门点击 -->
-          <div class="quick-section">
-            <h4><i class="fas fa-fire"></i> 热门推荐</h4>
-            <div class="quick-links">
-              <a 
-                v-for="link in popularLinks" 
-                :key="link.id"
-                :href="link.url"
-                target="_blank"
-                class="quick-link"
-              >
-                <i :class="['fas', link.icon || 'fa-link']" :style="{ color: link.color }"></i>
-                <span>{{ link.title }}</span>
-                <span class="click-count">{{ link.clicks }}次</span>
-              </a>
-            </div>
-          </div>
-          
-          <!-- 快捷操作 -->
-          <div class="quick-actions">
-            <button class="quick-action-btn" @click="exportData">
-              <i class="fas fa-download"></i>
-              <span>导出数据</span>
-            </button>
-            <button class="quick-action-btn" @click="clearStats">
-              <i class="fas fa-trash-alt"></i>
-              <span>清除统计</span>
-            </button>
           </div>
         </div>
       </div>
-    </transition>
+    </Transition>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { affLinks } from '../config/links.config'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { affLinks, categories, type AffLink } from '../config/links.config'
 
-const showQuickPanel = ref(false)
+const showPanel = ref(false)
+const showStatsModal = ref(false)
 const recentVisits = ref<string[]>([])
 const clickStats = ref<Record<string, number>>({})
 
+// 计算属性
 const recentLinks = computed(() => {
   return recentVisits.value
     .map(id => affLinks.find(link => link.id === id))
     .filter(Boolean)
-    .slice(0, 5)
+    .slice(0, 8)
 })
 
 const popularLinks = computed(() => {
@@ -94,29 +178,96 @@ const popularLinks = computed(() => {
       ...link,
       clicks: clickStats.value[link.id] || 0
     }))
+    .filter(link => link.clicks > 0)
     .sort((a, b) => b.clicks - a.clicks)
-    .slice(0, 5)
+    .slice(0, 8)
 })
+
+const totalLinks = computed(() => affLinks.length)
+const totalClicks = computed(() => Object.values(clickStats.value).reduce((sum, count) => sum + count, 0))
+
+// 方法
+const togglePanel = () => {
+  showPanel.value = !showPanel.value
+}
+
+const closePanel = () => {
+  showPanel.value = false
+}
+
+const getCategoryName = (categoryId: string): string => {
+  const category = categories.find(c => c.id === categoryId)
+  return category?.name || categoryId
+}
+
+const recordVisit = (link: AffLink) => {
+  // 更新点击统计
+  clickStats.value[link.id] = (clickStats.value[link.id] || 0) + 1
+  localStorage.setItem('clickStats', JSON.stringify(clickStats.value))
+
+  // 更新最近访问
+  const index = recentVisits.value.indexOf(link.id)
+  if (index > -1) {
+    recentVisits.value.splice(index, 1)
+  }
+  recentVisits.value.unshift(link.id)
+  recentVisits.value = recentVisits.value.slice(0, 10) // 最多保存10个
+  localStorage.setItem('recentVisits', JSON.stringify(recentVisits.value))
+}
 
 const exportData = () => {
   const data = {
     links: affLinks,
+    categories: categories,
     stats: clickStats.value,
     recent: recentVisits.value,
-    exportTime: new Date().toISOString()
+    exportTime: new Date().toISOString(),
+    version: '1.0.0'
   }
-  
+
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
-  a.download = `aff-links-backup-${Date.now()}.json`
+  a.download = `aff-links-backup-${new Date().toISOString().split('T')[0]}.json`
+  document.body.appendChild(a)
   a.click()
+  document.body.removeChild(a)
   URL.revokeObjectURL(url)
 }
 
+const importData = () => {
+  const input = document.createElement('input')
+  input.type = 'file'
+  input.accept = '.json'
+  input.onchange = (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target?.result as string)
+          if (data.stats) {
+            clickStats.value = data.stats
+            localStorage.setItem('clickStats', JSON.stringify(data.stats))
+          }
+          if (data.recent) {
+            recentVisits.value = data.recent
+            localStorage.setItem('recentVisits', JSON.stringify(data.recent))
+          }
+          alert('数据导入成功！')
+        } catch (error) {
+          alert('数据导入失败，请检查文件格式')
+        }
+      }
+      reader.readAsText(file)
+    }
+  }
+  input.click()
+}
+
 const clearStats = () => {
-  if (confirm('确定要清除所有统计数据吗？')) {
+  if (confirm('确定要清除所有统计数据吗？此操作不可恢复。')) {
     localStorage.removeItem('clickStats')
     localStorage.removeItem('recentVisits')
     clickStats.value = {}
@@ -124,231 +275,425 @@ const clearStats = () => {
   }
 }
 
+const showStats = () => {
+  showStatsModal.value = true
+  showPanel.value = false
+}
+
+// 点击外部关闭面板
+const handleClickOutside = (e: MouseEvent) => {
+  const panel = document.querySelector('.quick-access__panel')
+  const trigger = document.querySelector('.quick-access__trigger')
+
+  if (showPanel.value && panel && !panel.contains(e.target as Node) && !trigger?.contains(e.target as Node)) {
+    showPanel.value = false
+  }
+}
+
 onMounted(() => {
+  // 加载数据
   const stats = localStorage.getItem('clickStats')
   if (stats) {
     clickStats.value = JSON.parse(stats)
   }
-  
+
   const recent = localStorage.getItem('recentVisits')
   if (recent) {
     recentVisits.value = JSON.parse(recent)
   }
+
+  // 事件监听
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
 })
 </script>
 
 <style scoped>
 .quick-access {
   position: fixed;
-  right: 2rem;
-  bottom: 2rem;
-  z-index: 999;
+  right: var(--space-xl);
+  bottom: var(--space-xl);
+  z-index: 1000;
 }
 
-.quick-btn {
+/* 触发按钮 */
+.quick-access__trigger {
   width: 56px;
   height: 56px;
   border: none;
   border-radius: 50%;
-  background: var(--gradient-3);
+  background: var(--gradient-primary);
   color: white;
   font-size: 1.5rem;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(79, 172, 254, 0.4);
-  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-lg);
+  transition: all var(--transition-normal);
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  z-index: 1001;
 }
 
-.quick-btn:hover {
-  transform: scale(1.1) rotate(10deg);
-  box-shadow: 0 6px 30px rgba(79, 172, 254, 0.6);
+.quick-access__trigger:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-xl);
 }
 
-.quick-panel {
-  position: fixed;
-  top: 0;
+.quick-access__trigger:active {
+  transform: scale(0.95);
+}
+
+/* 面板 */
+.quick-access__panel {
+  position: absolute;
+  bottom: 70px;
   right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
-  z-index: 1000;
+  width: 360px;
+  max-width: calc(100vw - var(--space-xl) * 2);
+  max-height: 60vh;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
 }
 
-.quick-panel-content {
-  width: 380px;
-  max-width: 90vw;
-  height: 100%;
-  background: var(--bg-secondary);
-  padding: 1.5rem;
-  overflow-y: auto;
-  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.3);
-}
-
-.quick-header {
+.quick-access__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border-color);
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-tertiary);
 }
 
-.quick-header h3 {
+.quick-access__title {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-sm);
   color: var(--text-primary);
-  font-size: 1.25rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0;
 }
 
-.quick-header h3 i {
-  color: #fbbf24;
+.quick-access__title i {
+  color: var(--accent);
 }
 
-.close-btn {
+.quick-access__close {
   background: none;
   border: none;
   color: var(--text-muted);
   font-size: 1.25rem;
   cursor: pointer;
-  padding: 0.5rem;
-  transition: color var(--transition-fast);
+  padding: var(--space-xs);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
 }
 
-.close-btn:hover {
+.quick-access__close:hover {
   color: var(--text-primary);
+  background: var(--bg-secondary);
 }
 
-.quick-section {
-  margin-bottom: 1.5rem;
+.quick-access__content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-lg);
 }
 
-.quick-section h4 {
+.quick-access__section {
+  margin-bottom: var(--space-xl);
+}
+
+.quick-access__section:last-child {
+  margin-bottom: 0;
+}
+
+.quick-access__section-title {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-sm);
   color: var(--text-secondary);
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: var(--space-md);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
+.quick-access__section-title i {
+  color: var(--primary-light);
+}
+
+/* 快速链接 */
 .quick-links {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--space-sm);
 }
 
 .quick-link {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.875rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
   text-decoration: none;
   color: var(--text-primary);
   transition: all var(--transition-fast);
+  cursor: pointer;
 }
 
 .quick-link:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateX(-4px);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--border-hover);
+  transform: translateX(-2px);
 }
 
 .quick-link i {
-  font-size: 1.25rem;
-}
-
-.quick-link span {
-  flex: 1;
-  font-weight: 500;
-}
-
-.click-count {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.1);
-  padding: 0.25rem 0.5rem;
-  border-radius: 50px;
-}
-
-.empty-text {
-  color: var(--text-muted);
+  font-size: 1.125rem;
+  width: 20px;
   text-align: center;
-  padding: 1rem;
-  font-size: 0.9rem;
 }
 
-.quick-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border-color);
+.quick-link__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
 }
 
-.quick-action-btn {
+.quick-link__title {
+  font-weight: 500;
+  font-size: 0.875rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.quick-link__category {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.quick-link__count {
+  font-size: 0.75rem;
+  color: var(--accent);
+  background: rgba(6, 182, 212, 0.1);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  font-weight: 600;
+}
+
+.quick-links__empty {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
+  gap: var(--space-sm);
+  padding: var(--space-xl) var(--space-lg);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.quick-links__empty i {
+  font-size: 2rem;
+  opacity: 0.5;
+}
+
+/* 快捷操作 */
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm);
+}
+
+.quick-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
   color: var(--text-secondary);
   cursor: pointer;
   transition: all var(--transition-fast);
+  font-size: 0.75rem;
 }
 
-.quick-action-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text-primary);
-  border-color: var(--primary-color);
+.quick-action:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  transform: translateY(-2px);
 }
 
-.quick-action-btn i {
+.quick-action i {
   font-size: 1.25rem;
 }
 
-.quick-action-btn span {
-  font-size: 0.8rem;
+/* 统计弹窗 */
+.stats-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: var(--space-lg);
+}
+
+.stats-modal__content {
+  width: 100%;
+  max-width: 400px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+}
+
+.stats-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-tertiary);
+}
+
+.stats-modal__header h3 {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.stats-modal__close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: var(--space-xs);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast);
+}
+
+.stats-modal__close:hover {
+  color: var(--text-primary);
+}
+
+.stats-modal__body {
+  padding: var(--space-lg);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.stat-card i {
+  font-size: 1.5rem;
+  color: var(--primary-light);
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }
 
 /* 动画 */
-.slide-left-enter-active,
-.slide-left-leave-active {
-  transition: all var(--transition-medium);
+.slide-in-enter-active,
+.slide-in-leave-active {
+  transition: all var(--transition-normal);
 }
 
-.slide-left-enter-from,
-.slide-left-leave-to {
+.slide-in-enter-from,
+.slide-in-leave-to {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity var(--transition-normal);
+}
+
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 
-.slide-left-enter-from .quick-panel-content,
-.slide-left-leave-to .quick-panel-content {
-  transform: translateX(100%);
+/* 响应式 */
+@media (max-width: 768px) {
+  .quick-access {
+    right: var(--space-lg);
+    bottom: var(--space-lg);
+  }
+
+  .quick-access__panel {
+    width: calc(100vw - var(--space-lg) * 2);
+    max-height: 70vh;
+  }
+
+  .quick-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-/* 响应式 */
-@media (max-width: 640px) {
-  .quick-access {
-    right: 1rem;
-    bottom: 1rem;
+@media (max-width: 480px) {
+  .quick-link {
+    padding: var(--space-sm);
+    gap: var(--space-sm);
   }
-  
-  .quick-panel-content {
-    width: 100%;
-    max-width: 100%;
+
+  .quick-link__info {
+    gap: var(--space-xs);
+  }
+
+  .quick-action {
+    padding: var(--space-sm);
   }
 }
 </style>

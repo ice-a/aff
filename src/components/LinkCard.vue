@@ -1,68 +1,77 @@
 <template>
-  <div 
+  <article
     class="link-card"
-    :class="{ 'list-view': isListView }"
-    @click="$emit('click')"
+    :class="{ 'link-card--list': isListView }"
+    @click="handleClick"
   >
-    <!-- 渐变背景 -->
-    <div class="card-bg" :style="bgStyle">
-      <div class="bg-overlay"></div>
+    <!-- 卡片背景 -->
+    <div class="link-card__bg" :style="backgroundStyle">
+      <div class="link-card__overlay"></div>
     </div>
-    
-    <!-- 内容区 -->
-    <div class="card-content">
-      <!-- 头部 -->
-      <div class="card-header">
-        <div class="category-badge" :style="badgeStyle">
+
+    <!-- 卡片内容 -->
+    <div class="link-card__content">
+      <!-- 头部信息 -->
+      <header class="link-card__header">
+        <!-- 分类标签 -->
+        <div class="category-badge" :style="categoryStyle">
           <i :class="['fas', category?.icon || 'fa-tag']"></i>
           <span>{{ category?.name || link.category }}</span>
         </div>
-        
-        <div class="card-actions">
-          <button 
+
+        <!-- 操作按钮 -->
+        <div class="link-card__actions">
+          <button
             class="action-btn"
-            @click.stop="$emit('copy')"
-            title="复制链接"
+            @click.stop="handleCopy"
+            :title="copyTooltip"
+            aria-label="复制链接"
           >
             <i class="fas fa-copy"></i>
           </button>
         </div>
-      </div>
-      
-      <!-- 主体 -->
-      <div class="card-body">
-        <div class="icon-wrapper" :style="iconBgStyle">
-          <i :class="['fas', link.icon || 'fa-link']" :style="{ color: link.color }"></i>
+      </header>
+
+      <!-- 主体内容 -->
+      <div class="link-card__body">
+        <!-- 图标和标题 -->
+        <div class="link-card__info">
+          <div class="link-card__icon" :style="iconStyle">
+            <i :class="['fas', link.icon || 'fa-link']"></i>
+          </div>
+
+          <div class="link-card__title-group">
+            <h3 class="link-card__title">{{ link.title }}</h3>
+            <p class="link-card__description">{{ link.description }}</p>
+          </div>
         </div>
-        
-        <h3 class="card-title">{{ link.title }}</h3>
-        <p class="card-description">{{ link.description }}</p>
-        
+
         <!-- 标签 -->
-        <div class="tags">
-          <span 
-            v-for="tag in displayedTags" 
+        <div class="link-card__tags">
+          <span
+            v-for="tag in displayedTags"
             :key="tag"
             class="tag"
           >
             {{ tag }}
           </span>
-          <span v-if="link.tags.length > 3" class="tag more">
+          <span v-if="link.tags.length > 3" class="tag tag--more">
             +{{ link.tags.length - 3 }}
           </span>
         </div>
-      </div>
-      
-      <!-- 悬停详情 -->
-      <div class="card-details">
-        <div class="detail-item commission">
+
+        <!-- 佣金信息 -->
+        <div class="link-card__commission">
           <i class="fas fa-gift"></i>
           <span>{{ link.commission }}</span>
         </div>
-        
-        <div class="features">
-          <div 
-            v-for="feature in displayedFeatures" 
+      </div>
+
+      <!-- 悬停时显示的特性 -->
+      <div class="link-card__features">
+        <div class="features-list">
+          <div
+            v-for="feature in displayedFeatures"
             :key="feature"
             class="feature-item"
           >
@@ -70,14 +79,15 @@
             <span>{{ feature }}</span>
           </div>
         </div>
-        
+
+        <!-- 访问按钮 -->
         <button class="visit-btn" @click.stop="visitLink">
           <span>立即访问</span>
           <i class="fas fa-external-link-alt"></i>
         </button>
       </div>
     </div>
-  </div>
+  </article>
 </template>
 
 <script setup lang="ts">
@@ -98,74 +108,91 @@ const emit = defineEmits<{
   (e: 'copy'): void
 }>()
 
-// 预计算样式
-const badgeStyle = computed(() => ({
+// 计算样式
+const categoryStyle = computed(() => ({
   background: `${props.category?.color || '#6366f1'}20`,
-  color: props.category?.color || '#6366f1'
+  color: props.category?.color || '#6366f1',
+  border: `1px solid ${props.category?.color || '#6366f1'}30`
 }))
 
-const iconBgStyle = computed(() => ({
-  background: `${props.link.color}20`
+const iconStyle = computed(() => ({
+  background: `${props.link.color}15`,
+  border: `1px solid ${props.link.color}30`
 }))
 
-// 随机渐变背景 - 使用链接ID作为种子保持一致性
-const bgStyle = computed(() => {
+const backgroundStyle = computed(() => {
   const gradient = getRandomGradient(props.link.id)
   return {
-    background: gradient,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center'
+    background: gradient
   }
 })
 
-// 显示的标签（最多3个）
+// 显示的内容
 const displayedTags = computed(() => props.link.tags.slice(0, 3))
-
-// 显示的特性（最多3个）
 const displayedFeatures = computed(() => props.link.features.slice(0, 3))
+
+const copyTooltip = computed(() => `复制 ${props.link.title} 的链接`)
+
+// 方法
+const handleClick = () => {
+  emit('click')
+}
+
+const handleCopy = () => {
+  emit('copy')
+}
 
 const visitLink = () => {
   window.open(props.link.url, '_blank')
+  emit('click') // 同时触发点击统计
 }
 </script>
 
 <style scoped>
 .link-card {
   position: relative;
-  border-radius: var(--card-radius);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   cursor: pointer;
-  height: 380px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  height: 320px;
   background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  transition: all var(--transition-normal);
+  isolation: isolate;
   will-change: transform;
-  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
 }
 
 .link-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-xl);
 }
 
-.link-card.list-view {
+.link-card--list {
   height: auto;
-  min-height: 150px;
+  min-height: 160px;
 }
 
-.link-card.list-view .card-details {
+.link-card--list .link-card__features {
   display: none;
 }
 
-/* 背景图 - 移除动画 */
-.card-bg {
+/* 背景 */
+.link-card__bg {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: -1;
+  opacity: 0.1;
+  transition: opacity var(--transition-normal);
 }
 
-.bg-overlay {
+.link-card:hover .link-card__bg {
+  opacity: 0.15;
+}
+
+.link-card__overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -173,251 +200,279 @@ const visitLink = () => {
   bottom: 0;
   background: linear-gradient(
     180deg,
-    rgba(15, 23, 42, 0.3) 0%,
-    rgba(15, 23, 42, 0.85) 50%,
-    rgba(15, 23, 42, 0.95) 100%
+    rgba(15, 23, 42, 0.1) 0%,
+    rgba(15, 23, 42, 0.4) 50%,
+    rgba(15, 23, 42, 0.8) 100%
   );
 }
 
-.link-card:hover .bg-overlay {
-  background: linear-gradient(
-    180deg,
-    rgba(15, 23, 42, 0.5) 0%,
-    rgba(15, 23, 42, 0.95) 50%,
-    rgba(15, 23, 42, 1) 100%
-  );
-}
-
-/* 内容区 */
-.card-content {
+/* 内容 */
+.link-card__content {
   position: relative;
   z-index: 1;
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 1.5rem;
+  padding: var(--space-lg);
 }
 
 /* 头部 */
-.card-header {
+.link-card__header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.25rem;
+  align-items: flex-start;
+  margin-bottom: var(--space-lg);
 }
 
 .category-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.375rem 0.875rem;
-  border-radius: 50px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  max-width: 100%;
-  word-break: break-word;
-}
-
-.category-badge i {
-  font-size: 0.875rem;
-}
-
-.card-actions {
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+}
+
+.link-card__actions {
+  display: flex;
+  gap: var(--space-xs);
 }
 
 .action-btn {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border: none;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all var(--transition-fast);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .action-btn:hover {
-  background: var(--primary-color);
+  background: var(--primary);
+  color: white;
+  transform: scale(1.1);
 }
 
 /* 主体 */
-.card-body {
+.link-card__body {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-.icon-wrapper {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
+.link-card__info {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.link-card__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1rem;
+  flex-shrink: 0;
 }
 
-.icon-wrapper i {
-  font-size: 1.75rem;
+.link-card__icon i {
+  font-size: 1.5rem;
+  color: var(--primary-light);
 }
 
-.card-title {
-  font-size: 1.375rem;
+.link-card__title-group {
+  flex: 1;
+  min-width: 0;
+}
+
+.link-card__title {
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 0.625rem;
+  margin-bottom: var(--space-xs);
   line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.card-description {
-  font-size: 0.95rem;
+.link-card__description {
+  font-size: 0.875rem;
   color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 1rem;
+  line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* 标签 */
-.tags {
+.link-card__tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: auto;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
 }
 
 .tag {
-  padding: 0.25rem 0.75rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50px;
+  padding: var(--space-xs) var(--space-sm);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
   font-size: 0.75rem;
   color: var(--text-secondary);
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: all var(--transition-fast);
 }
 
 .tag:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: var(--text-primary);
-}
-
-.tag.more {
-  background: var(--primary-color);
+  background: var(--primary);
   color: white;
+  border-color: var(--primary);
 }
 
-/* 悬停详情 */
-.card-details {
+.tag--more {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.link-card__commission {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--gradient-warm);
+  border-radius: var(--radius-md);
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-top: auto;
+}
+
+.link-card__commission i {
+  font-size: 1rem;
+}
+
+/* 特性（悬停显示） */
+.link-card__features {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 1.5rem;
+  padding: var(--space-lg);
   background: linear-gradient(
     to top,
-    rgba(15, 23, 42, 1) 0%,
-    rgba(15, 23, 42, 0.98) 80%,
+    rgba(15, 23, 42, 0.95) 0%,
+    rgba(15, 23, 42, 0.9) 70%,
     transparent 100%
   );
   opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform: translateY(20px);
+  transition: all var(--transition-normal);
   pointer-events: none;
 }
 
-.link-card:hover .card-details {
+.link-card:hover .link-card__features {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
 }
 
-.detail-item.commission {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-  padding: 0.625rem 1rem;
-  background: var(--gradient-5);
-  border-radius: 10px;
-  color: white;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.detail-item.commission i {
-  font-size: 1rem;
-}
-
-.features {
+.features-list {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
 }
 
 .feature-item {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-sm);
   font-size: 0.875rem;
   color: var(--text-secondary);
 }
 
 .feature-item i {
-  color: var(--success-color);
+  color: var(--success);
   font-size: 0.875rem;
 }
 
 .visit-btn {
   width: 100%;
-  padding: 0.875rem;
+  padding: var(--space-md);
   border: none;
-  border-radius: 12px;
-  background: var(--gradient-1);
+  border-radius: var(--radius-md);
+  background: var(--gradient-primary);
   color: white;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  gap: var(--space-sm);
+  transition: all var(--transition-fast);
 }
 
 .visit-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+  box-shadow: var(--shadow-md);
 }
 
 /* 响应式 */
 @media (max-width: 640px) {
   .link-card {
-    height: 360px;
+    height: 280px;
   }
-  
-  .card-content {
-    padding: 1.25rem;
+
+  .link-card__content {
+    padding: var(--space-md);
   }
-  
-  .card-title {
+
+  .link-card__title {
+    font-size: 1.125rem;
+  }
+
+  .link-card__info {
+    gap: var(--space-sm);
+  }
+
+  .link-card__icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .link-card__icon i {
     font-size: 1.25rem;
   }
-  
-  .card-details {
-    padding: 1.25rem;
+
+  .link-card__features {
+    padding: var(--space-md);
   }
 }
 
 @media (max-width: 480px) {
   .link-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+  }
+
+  .link-card__tags {
+    gap: var(--space-xs);
+  }
+
+  .tag {
+    font-size: 0.7rem;
+    padding: var(--space-xs) var(--space-sm);
   }
 }
 </style>
