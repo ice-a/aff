@@ -1,0 +1,487 @@
+diff --git a/node_modules/naive-ui/es/_internal/scrollbar/src/Scrollbar.mjs b/node_modules/naive-ui/es/_internal/scrollbar/src/Scrollbar.mjs
+index baf309d..62a77d8 100644
+--- a/node_modules/naive-ui/es/_internal/scrollbar/src/Scrollbar.mjs
++++ b/node_modules/naive-ui/es/_internal/scrollbar/src/Scrollbar.mjs
+@@ -2,7 +2,7 @@ import { off, on } from 'evtd';
+ import { depx, getPadding, getPreciseEventTarget, pxfy } from 'seemly';
+ import { useIsIos } from 'vooks';
+ import { computed, defineComponent, Fragment, h, mergeProps, onBeforeUnmount, onMounted, ref, Transition, watchEffect } from 'vue';
+-import { VResizeObserver } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VResizeObserver = __vueuc1__.VResizeObserver;
+ import { useConfig, useRtl, useTheme, useThemeClass } from "../../../_mixins/index.mjs";
+ import { rtlInset, useReactivated, Wrapper } from "../../../_utils/index.mjs";
+ import { scrollbarLight } from "../styles/index.mjs";
+diff --git a/node_modules/naive-ui/es/_internal/select-menu/src/SelectMenu.mjs b/node_modules/naive-ui/es/_internal/select-menu/src/SelectMenu.mjs
+index f1d8326..4703fc6 100644
+--- a/node_modules/naive-ui/es/_internal/select-menu/src/SelectMenu.mjs
++++ b/node_modules/naive-ui/es/_internal/select-menu/src/SelectMenu.mjs
+@@ -1,7 +1,7 @@
+ import { depx, getPadding, happensIn } from 'seemly';
+ import { createIndexGetter } from 'treemate';
+ import { computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, provide, ref, toRef, watch } from 'vue';
+-import { VirtualList } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VirtualList = __vueuc1__.VirtualList;
+ import { useConfig, useRtl, useTheme, useThemeClass } from "../../../_mixins/index.mjs";
+ import { resolveSlot, resolveWrappedSlot, useOnResize } from "../../../_utils/index.mjs";
+ import { createKey } from "../../../_utils/cssr/index.mjs";
+diff --git a/node_modules/naive-ui/es/_internal/selection/src/Selection.mjs b/node_modules/naive-ui/es/_internal/selection/src/Selection.mjs
+index cde4b29..2c19e80 100644
+--- a/node_modules/naive-ui/es/_internal/selection/src/Selection.mjs
++++ b/node_modules/naive-ui/es/_internal/selection/src/Selection.mjs
+@@ -1,6 +1,6 @@
+ import { getPadding } from 'seemly';
+ import { computed, defineComponent, Fragment, h, nextTick, onMounted, ref, toRef, watch, watchEffect } from 'vue';
+-import { VOverflow } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VOverflow = __vueuc1__.VOverflow;
+ import { useConfig, useRtl, useTheme, useThemeClass } from "../../../_mixins/index.mjs";
+ import { createKey, getTitleAttribute, render, useOnResize, Wrapper } from "../../../_utils/index.mjs";
+ import { NPopover } from "../../../popover/index.mjs";
+diff --git a/node_modules/naive-ui/es/_utils/composable/use-resize.mjs b/node_modules/naive-ui/es/_utils/composable/use-resize.mjs
+index ab2d495..1e151aa 100644
+--- a/node_modules/naive-ui/es/_utils/composable/use-resize.mjs
++++ b/node_modules/naive-ui/es/_utils/composable/use-resize.mjs
+@@ -1,5 +1,5 @@
+ import { onBeforeUnmount, onMounted, watch } from 'vue';
+-import { resizeObserverManager } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const resizeObserverManager = __vueuc1__.resizeObserverManager;
+ export function useOnResize(elRef, onResize) {
+   // it needn't be reactive since it's for internal usage
+   if (onResize) {
+diff --git a/node_modules/naive-ui/es/auto-complete/src/AutoComplete.mjs b/node_modules/naive-ui/es/auto-complete/src/AutoComplete.mjs
+index 66ce3e3..5e4ab80 100644
+--- a/node_modules/naive-ui/es/auto-complete/src/AutoComplete.mjs
++++ b/node_modules/naive-ui/es/auto-complete/src/AutoComplete.mjs
+@@ -3,7 +3,7 @@ import { createTreeMate } from 'treemate';
+ import { clickoutside } from 'vdirs';
+ import { useIsMounted, useMergedState } from 'vooks';
+ import { computed, defineComponent, h, ref, toRef, Transition, watchEffect, withDirectives } from 'vue';
+-import { VBinder, VFollower, VTarget } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VBinder = __vueuc1__.VBinder; const VFollower = __vueuc1__.VFollower; const VTarget = __vueuc1__.VTarget;
+ import { NInternalSelectMenu } from "../../_internal/index.mjs";
+ import { useConfig, useFormItem, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+ import { call, getFirstSlotVNodeWithTypedProps, useAdjustedTo, warnOnce } from "../../_utils/index.mjs";
+diff --git a/node_modules/naive-ui/es/avatar/src/Avatar.mjs b/node_modules/naive-ui/es/avatar/src/Avatar.mjs
+index 7af05ea..5dd6dc2 100644
+--- a/node_modules/naive-ui/es/avatar/src/Avatar.mjs
++++ b/node_modules/naive-ui/es/avatar/src/Avatar.mjs
+@@ -1,5 +1,5 @@
+ import { computed, defineComponent, h, inject, onBeforeUnmount, onMounted, ref, watch, watchEffect } from 'vue';
+-import { VResizeObserver } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VResizeObserver = __vueuc1__.VResizeObserver;
+ import { useConfig, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+ import { color2Class, createKey, resolveSlot, resolveWrappedSlot } from "../../_utils/index.mjs";
+ import { isImageSupportNativeLazy } from "../../_utils/env/is-native-lazy-load.mjs";
+diff --git a/node_modules/naive-ui/es/back-top/src/BackTop.mjs b/node_modules/naive-ui/es/back-top/src/BackTop.mjs
+index eea03b6..136728f 100644
+--- a/node_modules/naive-ui/es/back-top/src/BackTop.mjs
++++ b/node_modules/naive-ui/es/back-top/src/BackTop.mjs
+@@ -1,7 +1,7 @@
+ import { getScrollParent, unwrapElement } from 'seemly';
+ import { useIsMounted, useMergedState } from 'vooks';
+ import { computed, defineComponent, h, mergeProps, nextTick, onBeforeUnmount, onMounted, ref, toRef, Transition, watch, watchEffect } from 'vue';
+-import { VLazyTeleport } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VLazyTeleport = __vueuc1__.VLazyTeleport;
+ import { NBaseIcon } from "../../_internal/index.mjs";
+ import { useConfig, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+ import { formatLength, isDocument, lockHtmlScrollRightCompensationRef, resolveSlot, warn, warnOnce } from "../../_utils/index.mjs";
+diff --git a/node_modules/naive-ui/es/carousel/src/Carousel.mjs b/node_modules/naive-ui/es/carousel/src/Carousel.mjs
+index 3ab8c8d..7ee4303 100644
+--- a/node_modules/naive-ui/es/carousel/src/Carousel.mjs
++++ b/node_modules/naive-ui/es/carousel/src/Carousel.mjs
+@@ -2,7 +2,7 @@ import { off, on } from 'evtd';
+ import { getPreciseEventTarget } from 'seemly';
+ import { useMergedState } from 'vooks';
+ import { cloneVNode, computed, defineComponent, h, nextTick, normalizeStyle, onBeforeUnmount, onMounted, onUpdated, ref, toRef, Transition, vShow, watch, watchEffect, withDirectives } from 'vue';
+-import { VResizeObserver } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VResizeObserver = __vueuc1__.VResizeObserver;
+ import { useConfig, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+ import { flatten, keep, resolveSlotWithTypedProps } from "../../_utils/index.mjs";
+ import { carouselLight } from "../styles/index.mjs";
+diff --git a/node_modules/naive-ui/es/cascader/src/Cascader.mjs b/node_modules/naive-ui/es/cascader/src/Cascader.mjs
+index 0e25189..8c85f0b 100644
+--- a/node_modules/naive-ui/es/cascader/src/Cascader.mjs
++++ b/node_modules/naive-ui/es/cascader/src/Cascader.mjs
+@@ -2,7 +2,7 @@ import { changeColor, depx, getPreciseEventTarget, happensIn } from 'seemly';
+ import { createTreeMate, SubtreeNotLoadedError } from 'treemate';
+ import { useIsMounted, useMergedState } from 'vooks';
+ import { computed, defineComponent, h, isReactive, nextTick, provide, ref, toRef, watch, watchEffect } from 'vue';
+-import { VBinder, VFollower, VTarget } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VBinder = __vueuc1__.VBinder; const VFollower = __vueuc1__.VFollower; const VTarget = __vueuc1__.VTarget;
+ import { NInternalSelection } from "../../_internal/index.mjs";
+ import { useConfig, useFormItem, useLocale, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+ import { call, markEventEffectPerformed, useAdjustedTo, warnOnce } from "../../_utils/index.mjs";
+diff --git a/node_modules/naive-ui/es/cascader/src/CascaderSubmenu.mjs b/node_modules/naive-ui/es/cascader/src/CascaderSubmenu.mjs
+index e5014d4..112ac7d 100644
+--- a/node_modules/naive-ui/es/cascader/src/CascaderSubmenu.mjs
++++ b/node_modules/naive-ui/es/cascader/src/CascaderSubmenu.mjs
+@@ -1,6 +1,6 @@
+ import { depx } from 'seemly';
+ import { computed, defineComponent, h, inject, ref } from 'vue';
+-import { VirtualList } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VirtualList = __vueuc1__.VirtualList;
+ import { NScrollbar } from "../../_internal/index.mjs";
+ import NCascaderOption from "./CascaderOption.mjs";
+ import { cascaderInjectionKey } from "./interface.mjs";
+diff --git a/node_modules/naive-ui/es/color-picker/src/ColorPicker.mjs b/node_modules/naive-ui/es/color-picker/src/ColorPicker.mjs
+index c38cac2..dc2d2cf 100644
+--- a/node_modules/naive-ui/es/color-picker/src/ColorPicker.mjs
++++ b/node_modules/naive-ui/es/color-picker/src/ColorPicker.mjs
+@@ -2,7 +2,7 @@ import { getPreciseEventTarget, hsl2hsv, hsl2rgb, hsla, hsv2hsl, hsv2rgb, hsva,
+ import { clickoutside } from 'vdirs';
+ import { useIsMounted, useMergedState } from 'vooks';
+ import { computed, defineComponent, h, nextTick, provide, ref, toRef, Transition, watch, watchEffect, withDirectives } from 'vue';
+-import { VBinder, VFollower, VTarget } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VBinder = __vueuc1__.VBinder; const VFollower = __vueuc1__.VFollower; const VTarget = __vueuc1__.VTarget;
+ import { useConfig, useFormItem, useLocale, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+ import { call, createKey, resolveWrappedSlotWithProps, useAdjustedTo } from "../../_utils/index.mjs";
+ import { NButton } from "../../button/index.mjs";
+diff --git a/node_modules/naive-ui/es/data-table/src/TableParts/Body.mjs b/node_modules/naive-ui/es/data-table/src/TableParts/Body.mjs
+index 5108d0d..2e8313f 100644
+--- a/node_modules/naive-ui/es/data-table/src/TableParts/Body.mjs
++++ b/node_modules/naive-ui/es/data-table/src/TableParts/Body.mjs
+@@ -1,7 +1,7 @@
+ import { pxfy, repeat } from 'seemly';
+ import { useMemo } from 'vooks';
+ import { computed, defineComponent, Fragment, h, inject, onUnmounted, ref, watchEffect } from 'vue';
+-import { VirtualList, VResizeObserver } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VirtualList = __vueuc1__.VirtualList; const VResizeObserver = __vueuc1__.VResizeObserver;
+ import { NScrollbar } from "../../../_internal/index.mjs";
+ import { cssrAnchorMetaName } from "../../../_mixins/common.mjs";
+ import { formatLength, resolveSlot, warn } from "../../../_utils/index.mjs";
+diff --git a/node_modules/naive-ui/es/data-table/src/TableParts/Header.mjs b/node_modules/naive-ui/es/data-table/src/TableParts/Header.mjs
+index d50d6e3..45dbfdb 100644
+--- a/node_modules/naive-ui/es/data-table/src/TableParts/Header.mjs
++++ b/node_modules/naive-ui/es/data-table/src/TableParts/Header.mjs
+@@ -1,6 +1,6 @@
+ import { happensIn, pxfy } from 'seemly';
+ import { defineComponent, Fragment, h, inject, ref } from 'vue';
+-import { VVirtualList } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VVirtualList = __vueuc1__.VVirtualList;
+ import { formatLength } from "../../../_utils/index.mjs";
+ import { NCheckbox } from "../../../checkbox/index.mjs";
+ import { NEllipsis } from "../../../ellipsis/index.mjs";
+diff --git a/node_modules/naive-ui/es/date-picker/src/DatePicker.mjs b/node_modules/naive-ui/es/date-picker/src/DatePicker.mjs
+index bc0b33a..a754020 100644
+--- a/node_modules/naive-ui/es/date-picker/src/DatePicker.mjs
++++ b/node_modules/naive-ui/es/date-picker/src/DatePicker.mjs
+@@ -3,7 +3,7 @@ import { getPreciseEventTarget, happensIn } from 'seemly';
+ import { clickoutside } from 'vdirs';
+ import { useIsMounted, useMergedState } from 'vooks';
+ import { computed, defineComponent, h, provide, ref, toRef, Transition, watch, watchEffect, withDirectives } from 'vue';
+-import { VBinder, VFollower, VTarget } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VBinder = __vueuc1__.VBinder; const VFollower = __vueuc1__.VFollower; const VTarget = __vueuc1__.VTarget;
+ import { NBaseIcon } from "../../_internal/index.mjs";
+ import { DateIcon, ToIcon } from "../../_internal/icons/index.mjs";
+ import { useConfig, useFormItem, useLocale, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+diff --git a/node_modules/naive-ui/es/date-picker/src/panel/month.mjs b/node_modules/naive-ui/es/date-picker/src/panel/month.mjs
+index 073f376..498ca95 100644
+--- a/node_modules/naive-ui/es/date-picker/src/panel/month.mjs
++++ b/node_modules/naive-ui/es/date-picker/src/panel/month.mjs
+@@ -1,5 +1,5 @@
+ import { defineComponent, h, onMounted } from 'vue';
+-import { VirtualList } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VirtualList = __vueuc1__.VirtualList;
+ import { NBaseFocusDetector, NScrollbar } from "../../../_internal/index.mjs";
+ import { useLocale } from "../../../_mixins/index.mjs";
+ import { resolveSlotWithTypedProps, resolveWrappedSlot } from "../../../_utils/index.mjs";
+diff --git a/node_modules/naive-ui/es/date-picker/src/panel/monthrange.mjs b/node_modules/naive-ui/es/date-picker/src/panel/monthrange.mjs
+index abb96ab..20ef050 100644
+--- a/node_modules/naive-ui/es/date-picker/src/panel/monthrange.mjs
++++ b/node_modules/naive-ui/es/date-picker/src/panel/monthrange.mjs
+@@ -1,5 +1,5 @@
+ import { defineComponent, h, onMounted, watchEffect } from 'vue';
+-import { VirtualList } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VirtualList = __vueuc1__.VirtualList;
+ import { NBaseFocusDetector, NScrollbar } from "../../../_internal/index.mjs";
+ import { useLocale } from "../../../_mixins/index.mjs";
+ import { resolveSlotWithTypedProps, resolveWrappedSlot, warnOnce } from "../../../_utils/index.mjs";
+diff --git a/node_modules/naive-ui/es/date-picker/src/panel/panelHeader.mjs b/node_modules/naive-ui/es/date-picker/src/panel/panelHeader.mjs
+index 7db277d..b9f7cb3 100644
+--- a/node_modules/naive-ui/es/date-picker/src/panel/panelHeader.mjs
++++ b/node_modules/naive-ui/es/date-picker/src/panel/panelHeader.mjs
+@@ -1,7 +1,7 @@
+ import { getPreciseEventTarget } from 'seemly';
+ import { clickoutside } from 'vdirs';
+ import { defineComponent, h, ref, Transition, withDirectives } from 'vue';
+-import { VBinder, VFollower, VTarget } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VBinder = __vueuc1__.VBinder; const VFollower = __vueuc1__.VFollower; const VTarget = __vueuc1__.VTarget;
+ import MonthPanel from "./month.mjs";
+ export default defineComponent({
+   props: {
+diff --git a/node_modules/naive-ui/es/drawer/src/Drawer.mjs b/node_modules/naive-ui/es/drawer/src/Drawer.mjs
+index b3ab2fa..0f1b23e 100644
+--- a/node_modules/naive-ui/es/drawer/src/Drawer.mjs
++++ b/node_modules/naive-ui/es/drawer/src/Drawer.mjs
+@@ -1,7 +1,7 @@
+ import { zindexable } from 'vdirs';
+ import { useIsMounted, useMergedState } from 'vooks';
+ import { computed, defineComponent, h, provide, ref, toRef, Transition, watchEffect, withDirectives } from 'vue';
+-import { VLazyTeleport } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VLazyTeleport = __vueuc1__.VLazyTeleport;
+ import { useConfig, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+ import { call, eventEffectNotPerformed, formatLength, useIsComposing, warnOnce } from "../../_utils/index.mjs";
+ import { drawerLight } from "../styles/index.mjs";
+diff --git a/node_modules/naive-ui/es/drawer/src/DrawerBodyWrapper.mjs b/node_modules/naive-ui/es/drawer/src/DrawerBodyWrapper.mjs
+index 8b94f07..ca5fdab 100644
+--- a/node_modules/naive-ui/es/drawer/src/DrawerBodyWrapper.mjs
++++ b/node_modules/naive-ui/es/drawer/src/DrawerBodyWrapper.mjs
+@@ -1,6 +1,6 @@
+ import { clickoutside } from 'vdirs';
+ import { computed, defineComponent, h, inject, mergeProps, onBeforeUnmount, provide, ref, Transition, vShow, watch, watchEffect, withDirectives } from 'vue';
+-import { VFocusTrap } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VFocusTrap = __vueuc1__.VFocusTrap;
+ import { NScrollbar } from "../../_internal/index.mjs";
+ import { useConfig, useRtl } from "../../_mixins/index.mjs";
+ import { useLockHtmlScroll } from "../../_utils/index.mjs";
+diff --git a/node_modules/naive-ui/es/dropdown/src/DropdownOption.mjs b/node_modules/naive-ui/es/dropdown/src/DropdownOption.mjs
+index 5461d35..d1136c7 100644
+--- a/node_modules/naive-ui/es/dropdown/src/DropdownOption.mjs
++++ b/node_modules/naive-ui/es/dropdown/src/DropdownOption.mjs
+@@ -1,7 +1,7 @@
+ import { happensIn } from 'seemly';
+ import { useMemo } from 'vooks';
+ import { computed, defineComponent, h, inject, mergeProps, provide, ref, Transition } from 'vue';
+-import { VBinder, VFollower, VTarget } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VBinder = __vueuc1__.VBinder; const VFollower = __vueuc1__.VFollower; const VTarget = __vueuc1__.VTarget;
+ import { ChevronRightIcon } from "../../_internal/icons/index.mjs";
+ import { render, useDeferredTrue } from "../../_utils/index.mjs";
+ import { NIcon } from "../../icon/index.mjs";
+diff --git a/node_modules/naive-ui/es/grid/src/Grid.mjs b/node_modules/naive-ui/es/grid/src/Grid.mjs
+index 59558fa..7c2444b 100644
+--- a/node_modules/naive-ui/es/grid/src/Grid.mjs
++++ b/node_modules/naive-ui/es/grid/src/Grid.mjs
+@@ -1,7 +1,7 @@
+ import { beforeNextFrameOnce, parseResponsivePropValue, pxfy } from 'seemly';
+ import { useBreakpoints, useMemo } from 'vooks';
+ import { cloneVNode, computed, defineComponent, h, mergeProps, onMounted, provide, ref, toRef, vShow } from 'vue';
+-import { VResizeObserver } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VResizeObserver = __vueuc1__.VResizeObserver;
+ import { useConfig } from "../../_mixins/index.mjs";
+ import { flatten, getSlot, isBrowser, isNodeVShowFalse } from "../../_utils/index.mjs";
+ import { defaultBreakpoints } from "../../config-provider/src/config.mjs";
+diff --git a/node_modules/naive-ui/es/image/src/ImagePreview.mjs b/node_modules/naive-ui/es/image/src/ImagePreview.mjs
+index 400346c..206f472 100644
+--- a/node_modules/naive-ui/es/image/src/ImagePreview.mjs
++++ b/node_modules/naive-ui/es/image/src/ImagePreview.mjs
+@@ -4,7 +4,7 @@ import { beforeNextFrameOnce } from 'seemly';
+ import { zindexable } from 'vdirs';
+ import { useIsMounted, useMergedState } from 'vooks';
+ import { computed, defineComponent, Fragment, h, inject, normalizeStyle, onBeforeUnmount, ref, toRef, toRefs, Transition, vShow, watch, withDirectives } from 'vue';
+-import { LazyTeleport } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const LazyTeleport = __vueuc1__.LazyTeleport;
+ import { NBaseIcon } from "../../_internal/index.mjs";
+ import { DownloadIcon, ResizeSmallIcon, RotateClockwiseIcon, RotateCounterclockwiseIcon, ZoomInIcon, ZoomOutIcon } from "../../_internal/icons/index.mjs";
+ import { useConfig, useLocale, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+diff --git a/node_modules/naive-ui/es/input/src/Input.mjs b/node_modules/naive-ui/es/input/src/Input.mjs
+index 5cdffb5..78a0f9b 100644
+--- a/node_modules/naive-ui/es/input/src/Input.mjs
++++ b/node_modules/naive-ui/es/input/src/Input.mjs
+@@ -2,7 +2,7 @@ import { off, on } from 'evtd';
+ import { getPadding } from 'seemly';
+ import { useMemo, useMergedState } from 'vooks';
+ import { computed, defineComponent, Fragment, getCurrentInstance, h, nextTick, onMounted, provide, ref, toRef, watch, watchEffect } from 'vue';
+-import { VResizeObserver } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VResizeObserver = __vueuc1__.VResizeObserver;
+ import { NBaseClear, NBaseIcon, NBaseSuffix, NScrollbar } from "../../_internal/index.mjs";
+ import { EyeIcon, EyeOffIcon } from "../../_internal/icons/index.mjs";
+ import { useConfig, useFormItem, useLocale, useStyle, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+diff --git a/node_modules/naive-ui/es/legacy-transfer/src/TransferList.mjs b/node_modules/naive-ui/es/legacy-transfer/src/TransferList.mjs
+index d71a5a1..353b9b9 100644
+--- a/node_modules/naive-ui/es/legacy-transfer/src/TransferList.mjs
++++ b/node_modules/naive-ui/es/legacy-transfer/src/TransferList.mjs
+@@ -1,5 +1,5 @@
+ import { computed, defineComponent, Fragment, h, inject, ref, Transition, TransitionGroup } from 'vue';
+-import { VirtualList } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VirtualList = __vueuc1__.VirtualList;
+ import { NScrollbar } from "../../_internal/index.mjs";
+ import { useConfig } from "../../_mixins/index.mjs";
+ import { NEmpty } from "../../empty/index.mjs";
+diff --git a/node_modules/naive-ui/es/marquee/src/Marquee.mjs b/node_modules/naive-ui/es/marquee/src/Marquee.mjs
+index 8bb9ad7..07640a1 100644
+--- a/node_modules/naive-ui/es/marquee/src/Marquee.mjs
++++ b/node_modules/naive-ui/es/marquee/src/Marquee.mjs
+@@ -1,6 +1,6 @@
+ import { repeat } from 'seemly';
+ import { computed, defineComponent, h, nextTick, ref } from 'vue';
+-import { VResizeObserver } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VResizeObserver = __vueuc1__.VResizeObserver;
+ import { useConfig, useTheme } from "../../_mixins/index.mjs";
+ import { marqueeLight } from "../styles/index.mjs";
+ import { marqueeProps } from "./props.mjs";
+diff --git a/node_modules/naive-ui/es/mention/src/Mention.mjs b/node_modules/naive-ui/es/mention/src/Mention.mjs
+index 3524490..3bf7e02 100644
+--- a/node_modules/naive-ui/es/mention/src/Mention.mjs
++++ b/node_modules/naive-ui/es/mention/src/Mention.mjs
+@@ -1,7 +1,7 @@
+ import { createTreeMate } from 'treemate';
+ import { useIsMounted, useMergedState } from 'vooks';
+ import { computed, defineComponent, h, nextTick, ref, toRef, Transition } from 'vue';
+-import { VBinder, VFollower, VTarget } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VBinder = __vueuc1__.VBinder; const VFollower = __vueuc1__.VFollower; const VTarget = __vueuc1__.VTarget;
+ import { NInternalSelectMenu } from "../../_internal/index.mjs";
+ import { useConfig, useFormItem, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+ import { call, useAdjustedTo, warn } from "../../_utils/index.mjs";
+diff --git a/node_modules/naive-ui/es/menu/src/Menu.mjs b/node_modules/naive-ui/es/menu/src/Menu.mjs
+index 2e82ffc..7638283 100644
+--- a/node_modules/naive-ui/es/menu/src/Menu.mjs
++++ b/node_modules/naive-ui/es/menu/src/Menu.mjs
+@@ -2,7 +2,7 @@ import { createId } from 'seemly';
+ import { createTreeMate } from 'treemate';
+ import { useCompitable, useMergedState } from 'vooks';
+ import { computed, defineComponent, h, inject, mergeProps, provide, ref, toRef, watchEffect } from 'vue';
+-import { VOverflow, VResizeObserver } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VOverflow = __vueuc1__.VOverflow; const VResizeObserver = __vueuc1__.VResizeObserver;
+ import { useConfig, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+ import { call } from "../../_utils/index.mjs";
+ import { layoutSiderInjectionKey } from "../../layout/src/interface.mjs";
+diff --git a/node_modules/naive-ui/es/modal/src/BodyWrapper.mjs b/node_modules/naive-ui/es/modal/src/BodyWrapper.mjs
+index 0279cdb..aec3b53 100644
+--- a/node_modules/naive-ui/es/modal/src/BodyWrapper.mjs
++++ b/node_modules/naive-ui/es/modal/src/BodyWrapper.mjs
+@@ -1,6 +1,6 @@
+ import { clickoutside } from 'vdirs';
+ import { cloneVNode, computed, defineComponent, h, inject, mergeProps, nextTick, normalizeClass, provide, ref, toRef, Transition, vShow, watch, withDirectives } from 'vue';
+-import { VFocusTrap } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VFocusTrap = __vueuc1__.VFocusTrap;
+ import { NScrollbar } from "../../_internal/index.mjs";
+ import { getFirstSlotVNodeWithTypedProps, keep, useLockHtmlScroll, warn } from "../../_utils/index.mjs";
+ import { NCard } from "../../card/index.mjs";
+diff --git a/node_modules/naive-ui/es/modal/src/Modal.mjs b/node_modules/naive-ui/es/modal/src/Modal.mjs
+index c176c63..4bc052b 100644
+--- a/node_modules/naive-ui/es/modal/src/Modal.mjs
++++ b/node_modules/naive-ui/es/modal/src/Modal.mjs
+@@ -2,7 +2,7 @@ import { getPreciseEventTarget } from 'seemly';
+ import { zindexable } from 'vdirs';
+ import { useClicked, useClickPosition, useIsMounted } from 'vooks';
+ import { computed, defineComponent, h, inject, provide, ref, toRef, Transition, withDirectives } from 'vue';
+-import { VLazyTeleport } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VLazyTeleport = __vueuc1__.VLazyTeleport;
+ import { useConfig, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+ import { call, eventEffectNotPerformed, keep, useIsComposing, warnOnce } from "../../_utils/index.mjs";
+ import { dialogProviderInjectionKey } from "../../dialog/src/context.mjs";
+diff --git a/node_modules/naive-ui/es/popover/src/Popover.mjs b/node_modules/naive-ui/es/popover/src/Popover.mjs
+index cfdbe11..67c98ea 100644
+--- a/node_modules/naive-ui/es/popover/src/Popover.mjs
++++ b/node_modules/naive-ui/es/popover/src/Popover.mjs
+@@ -1,7 +1,7 @@
+ import { zindexable } from 'vdirs';
+ import { useCompitable, useIsMounted, useMemo, useMergedState } from 'vooks';
+ import { cloneVNode, computed, defineComponent, h, provide, ref, Text, toRef, watchEffect, withDirectives } from 'vue';
+-import { VBinder, VTarget } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VBinder = __vueuc1__.VBinder; const VTarget = __vueuc1__.VTarget;
+ import { useTheme } from "../../_mixins/index.mjs";
+ import { call, getFirstSlotVNode, keep, useAdjustedTo, warnOnce } from "../../_utils/index.mjs";
+ import NPopoverBody, { popoverBodyProps } from "./PopoverBody.mjs";
+diff --git a/node_modules/naive-ui/es/popover/src/PopoverBody.mjs b/node_modules/naive-ui/es/popover/src/PopoverBody.mjs
+index e4bdb85..be86c72 100644
+--- a/node_modules/naive-ui/es/popover/src/PopoverBody.mjs
++++ b/node_modules/naive-ui/es/popover/src/PopoverBody.mjs
+@@ -1,7 +1,7 @@
+ import { getPreciseEventTarget } from 'seemly';
+ import { clickoutside, mousemoveoutside } from 'vdirs';
+ import { computed, defineComponent, Fragment, h, inject, mergeProps, onBeforeUnmount, provide, ref, toRef, Transition, vShow, watch, watchEffect, withDirectives } from 'vue';
+-import { VFocusTrap, VFollower } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VFocusTrap = __vueuc1__.VFocusTrap; const VFollower = __vueuc1__.VFollower;
+ import { NxScrollbar } from "../../_internal/scrollbar/index.mjs";
+ import { useConfig, useRtl, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+ import { formatLength, isJsdom, isSlotEmpty, resolveWrappedSlot, useAdjustedTo } from "../../_utils/index.mjs";
+diff --git a/node_modules/naive-ui/es/select/src/Select.mjs b/node_modules/naive-ui/es/select/src/Select.mjs
+index e2b5095..b657981 100644
+--- a/node_modules/naive-ui/es/select/src/Select.mjs
++++ b/node_modules/naive-ui/es/select/src/Select.mjs
+@@ -3,7 +3,7 @@ import { createTreeMate } from 'treemate';
+ import { clickoutside } from 'vdirs';
+ import { useCompitable, useIsMounted, useMergedState } from 'vooks';
+ import { computed, defineComponent, h, ref, toRef, Transition, vShow, watch, watchEffect, withDirectives } from 'vue';
+-import { VBinder, VFollower, VTarget } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VBinder = __vueuc1__.VBinder; const VFollower = __vueuc1__.VFollower; const VTarget = __vueuc1__.VTarget;
+ import { NInternalSelection, NInternalSelectMenu } from "../../_internal/index.mjs";
+ import { useConfig, useFormItem, useLocale, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+ import { call, markEventEffectPerformed, useAdjustedTo, warnOnce } from "../../_utils/index.mjs";
+diff --git a/node_modules/naive-ui/es/slider/src/Slider.mjs b/node_modules/naive-ui/es/slider/src/Slider.mjs
+index 366da4a..0cf2be8 100644
+--- a/node_modules/naive-ui/es/slider/src/Slider.mjs
++++ b/node_modules/naive-ui/es/slider/src/Slider.mjs
+@@ -1,7 +1,7 @@
+ import { off, on } from 'evtd';
+ import { useIsMounted, useMergedState } from 'vooks';
+ import { computed, defineComponent, h, nextTick, onBeforeUnmount, ref, toRef, Transition, watch } from 'vue';
+-import { VBinder, VFollower, VTarget } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VBinder = __vueuc1__.VBinder; const VFollower = __vueuc1__.VFollower; const VTarget = __vueuc1__.VTarget;
+ import { useConfig, useFormItem, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+ import { call, resolveSlot, useAdjustedTo } from "../../_utils/index.mjs";
+ import { sliderLight } from "../styles/index.mjs";
+diff --git a/node_modules/naive-ui/es/tabs/src/Tabs.mjs b/node_modules/naive-ui/es/tabs/src/Tabs.mjs
+index 80ec6de..a956f35 100644
+--- a/node_modules/naive-ui/es/tabs/src/Tabs.mjs
++++ b/node_modules/naive-ui/es/tabs/src/Tabs.mjs
+@@ -2,7 +2,7 @@ import { throttle as _throttle } from 'lodash-es';
+ import { depx, getPadding } from 'seemly';
+ import { onFontsReady, useCompitable, useMergedState } from 'vooks';
+ import { cloneVNode, computed, defineComponent, h, nextTick, onMounted, provide, ref, toRef, TransitionGroup, vShow, watch, watchEffect, withDirectives } from 'vue';
+-import { VResizeObserver, VXScroll } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VResizeObserver = __vueuc1__.VResizeObserver; const VXScroll = __vueuc1__.VXScroll;
+ import { useConfig, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+ import { call, createKey, flatten, resolveWrappedSlot, warnOnce } from "../../_utils/index.mjs";
+ import { tabsLight } from "../styles/index.mjs";
+diff --git a/node_modules/naive-ui/es/time-picker/src/TimePicker.mjs b/node_modules/naive-ui/es/time-picker/src/TimePicker.mjs
+index 0dbbda2..99a0436 100644
+--- a/node_modules/naive-ui/es/time-picker/src/TimePicker.mjs
++++ b/node_modules/naive-ui/es/time-picker/src/TimePicker.mjs
+@@ -4,7 +4,7 @@ import { getPreciseEventTarget, happensIn } from 'seemly';
+ import { clickoutside } from 'vdirs';
+ import { useIsMounted, useKeyboard, useMergedState } from 'vooks';
+ import { computed, defineComponent, h, nextTick, provide, ref, toRef, Transition, watch, watchEffect, withDirectives } from 'vue';
+-import { VBinder, VFollower, VTarget } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VBinder = __vueuc1__.VBinder; const VFollower = __vueuc1__.VFollower; const VTarget = __vueuc1__.VTarget;
+ import { NBaseIcon } from "../../_internal/index.mjs";
+ import { TimeIcon } from "../../_internal/icons/index.mjs";
+ import { useConfig, useFormItem, useLocale, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+diff --git a/node_modules/naive-ui/es/transfer/src/TransferList.mjs b/node_modules/naive-ui/es/transfer/src/TransferList.mjs
+index 150c98f..4b21bc2 100644
+--- a/node_modules/naive-ui/es/transfer/src/TransferList.mjs
++++ b/node_modules/naive-ui/es/transfer/src/TransferList.mjs
+@@ -1,5 +1,5 @@
+ import { computed, defineComponent, h, inject, ref } from 'vue';
+-import { VirtualList } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VirtualList = __vueuc1__.VirtualList;
+ import { NScrollbar } from "../../_internal/index.mjs";
+ import { useConfig } from "../../_mixins/index.mjs";
+ import { NEmpty } from "../../empty/index.mjs";
+diff --git a/node_modules/naive-ui/es/tree-select/src/TreeSelect.mjs b/node_modules/naive-ui/es/tree-select/src/TreeSelect.mjs
+index aa6af8e..6459b3d 100644
+--- a/node_modules/naive-ui/es/tree-select/src/TreeSelect.mjs
++++ b/node_modules/naive-ui/es/tree-select/src/TreeSelect.mjs
+@@ -3,7 +3,7 @@ import { createTreeMate } from 'treemate';
+ import { clickoutside } from 'vdirs';
+ import { useIsMounted, useMergedState } from 'vooks';
+ import { computed, defineComponent, h, provide, ref, toRef, Transition, watchEffect, withDirectives } from 'vue';
+-import { VBinder, VFollower, VTarget } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VBinder = __vueuc1__.VBinder; const VFollower = __vueuc1__.VFollower; const VTarget = __vueuc1__.VTarget;
+ import { NBaseFocusDetector, NInternalSelection } from "../../_internal/index.mjs";
+ import { useConfig, useFormItem, useLocale, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+ import { call, markEventEffectPerformed, resolveSlot, resolveWrappedSlot, useAdjustedTo, useOnResize, warnOnce } from "../../_utils/index.mjs";
+diff --git a/node_modules/naive-ui/es/tree/src/Tree.mjs b/node_modules/naive-ui/es/tree/src/Tree.mjs
+index 019797f..eb1a78b 100644
+--- a/node_modules/naive-ui/es/tree/src/Tree.mjs
++++ b/node_modules/naive-ui/es/tree/src/Tree.mjs
+@@ -29,7 +29,7 @@ import { depx, getPadding, pxfy } from 'seemly';
+ import { createIndexGetter, createTreeMate, flatten } from 'treemate';
+ import { useMergedState } from 'vooks';
+ import { computed, defineComponent, h, inject, nextTick, provide, ref, toRef, watch, watchEffect } from 'vue';
+-import { VVirtualList } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VVirtualList = __vueuc1__.VVirtualList;
+ import { NxScrollbar } from "../../_internal/index.mjs";
+ import { useConfig, useRtl, useTheme, useThemeClass } from "../../_mixins/index.mjs";
+ import { call, createDataKey, resolveSlot, warn, warnOnce } from "../../_utils/index.mjs";
+diff --git a/node_modules/naive-ui/es/virtual-list/src/VirtualList.mjs b/node_modules/naive-ui/es/virtual-list/src/VirtualList.mjs
+index f30d751..053ece0 100644
+--- a/node_modules/naive-ui/es/virtual-list/src/VirtualList.mjs
++++ b/node_modules/naive-ui/es/virtual-list/src/VirtualList.mjs
+@@ -1,5 +1,5 @@
+ import { defineComponent, h, ref } from 'vue';
+-import { VVirtualList } from 'vueuc';
++import __vueuc1__ from 'vueuc/lib/index.js'; const VVirtualList = __vueuc1__.VVirtualList;
+ import { NxScrollbar } from "../../_internal/index.mjs";
+ export const virtualListProps = {
+   scrollbarProps: Object,

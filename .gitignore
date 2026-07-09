@@ -30,3 +30,19 @@ yarn-error.log*
 .cache/
 .parcel-cache/
 .eslintcache
+
+# Nuxt
+.nuxt/
+.output/
+.data/
+
+# Probe / temp
+productEn_probe.js
+p1_*.json
+p2_*.html
+p2_*.json
+npm_install*.log
+npm_pid.txt
+
+# Mongo memory server
+.mongodb-binaries/
