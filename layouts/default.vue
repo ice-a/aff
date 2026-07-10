@@ -8,11 +8,12 @@
         </NuxtLink>
         <nav class="nav">
           <NuxtLink to="/" class="nav-link">流量卡</NuxtLink>
+          <NuxtLink to="/affiliate" class="nav-link">精选推荐</NuxtLink>
         </nav>
         <div class="actions">
-          <n-button type="primary" :loading="syncing" @click="sync">
-            {{ syncText }}
-          </n-button>
+          <NuxtLink to="/admin">
+            <n-button>管理后台</n-button>
+          </NuxtLink>
         </div>
       </div>
     </header>
@@ -22,37 +23,13 @@
     </main>
 
     <footer class="footer">
-      <p>流量卡优选中心 · 聚合多平台号卡资源，数据经 AI 提取与对比，办理请前往原平台</p>
+      <p>优选中心 · 聚合多平台优质资源，数据经 AI 提取与对比，办理请前往原平台</p>
     </footer>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useMessage } from 'naive-ui'
-const syncing = ref(false)
-const syncText = ref('同步最新数据')
-const message = useMessage()
-
-async function sync() {
-  syncing.value = true
-  syncText.value = '抓取中…'
-  try {
-    const res: any = await $fetch('/api/scrape', { method: 'POST' })
-    const lines = res.results
-      .map(
-        (r: any) =>
-          r.platformName + ': 抓到' + r.fetched + '条，新增' + r.inserted + '，更新' + r.updated + (r.error ? '（失败:' + r.error + '）' : ''),
-      )
-      .join('\n')
-    const expired = res.results[0]?.expiredDeleted ?? 0
-    message.success('同步完成\n' + lines + '\n自动清理过期卡片 ' + expired + ' 张', { duration: 4000, closable: true })
-  } catch (e: any) {
-    message.error('同步失败：' + (e?.data?.message || e.message))
-  } finally {
-    syncing.value = false
-    syncText.value = '同步最新数据'
-  }
-}
+const route = useRoute()
 </script>
 
 <style scoped>

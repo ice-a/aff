@@ -46,3 +46,9 @@ npm_pid.txt
 
 # Mongo memory server
 .mongodb-binaries/
+
+# Vercel
+.vercel/
+
+# Maestro
+.mimocode/

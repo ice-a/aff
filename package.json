@@ -8,15 +8,16 @@
     "start": "node .output/server/index.mjs",
     "generate": "nuxt generate",
     "seed": "node --import tsx server/scripts/seed.ts",
+    "seed:affiliate": "node --import tsx server/scripts/seed-affiliate.ts",
     "postinstall": "patch-package && nuxt prepare"
   },
   "dependencies": {
+    "cheerio": "^1.2.0",
     "mongodb-memory-server": "^10.4.3",
     "mongoose": "^8.8.1",
     "naive-ui": "^2.40.1",
     "nuxt": "^3.14.159",
     "openai": "^4.73.0",
-    "playwright": "^1.49.1",
     "vue": "^3.5.13"
   },
   "devDependencies": {

@@ -1,60 +1,106 @@
-import { getBrowser, newPage } from './browser'
+import * as cheerio from 'cheerio'
 import { buildRawText, type NormalizedProduct } from './types'
 
 export async function fetchPlatform2(): Promise<NormalizedProduct[]> {
   const config = useRuntimeConfig()
-  const { baseUrl, name: platformName } = config.platform2
-  const browser = await getBrowser()
-  const page = await newPage(browser)
+  const { baseUrl } = config.platform2
   const results: NormalizedProduct[] = []
-  try {
-    await page.goto(baseUrl, { waitUntil: 'networkidle', timeout: 45000 })
-    await page.waitForSelector('#productList', { timeout: 20000 }).catch(() => {})
-    await page.waitForTimeout(3000)
 
-    const raw = await page.evaluate(() => {
-      const out: any[] = []
-      const cards = Array.from(document.querySelectorAll('#productList > div'))
-      cards.forEach((card) => {
-        const titleEl = card.querySelector('.card-title')
-        const name = titleEl ? titleEl.textContent?.trim() || '' : ''
-        if (!name) return
-        const descEl = card.querySelector('.mb-2')
-        const desc = descEl ? descEl.textContent?.trim() || '' : ''
-        const imgEl = card.querySelector('img') as HTMLImageElement | null
-        const img = imgEl?.getAttribute('src') || imgEl?.getAttribute('data-src') || ''
-        const buyEl = card.querySelector('.btn-buy') as HTMLAnchorElement | null
-        const buy = buyEl?.getAttribute('href') || ''
-        const text = card.textContent?.replace(/\s+/g, ' ').trim() || ''
-        out.push({ name, desc, img, buy, text })
-      })
-      return out
-    })
+  // 先尝试直接请求 HTML
+  const html = await $fetch(baseUrl, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    },
+  })
 
-    const seen = new Set<string>()
-    for (const r of raw) {
-      const pidMatch = r.buy.match(/pid=([^&]+)/)
-      const pid = pidMatch ? pidMatch[1] : r.buy || r.name
-      if (seen.has(pid)) continue
+  const $ = cheerio.load(html)
+  const seen = new Set<string>()
+
+  // 尝试多种选择器
+  const selectors = ['#productList > div', '.product-card', '[class*="product"]', '.card']
+  
+  for (const selector of selectors) {
+    $(selector).each((_, card) => {
+      const $card = $(card)
+      const name = $card.find('.card-title, h3, h4, [class*="title"]').first().text().trim()
+      if (!name) return
+
+      const desc = $card.find('.mb-2, .desc, [class*="desc"]').first().text().trim()
+      const img = $card.find('img').first().attr('src') || $card.find('img').first().attr('data-src') || ''
+      const buyEl = $card.find('a[href*="buy"], a[href*="order"], .btn-buy, a[class*="buy"]')
+      const buy = buyEl.attr('href') || ''
+      const text = $card.text().replace(/\s+/g, ' ').trim()
+
+      const pidMatch = buy.match(/pid=([^&]+)/)
+      const pid = pidMatch ? pidMatch[1] : buy || name
+      if (seen.has(pid)) return
       seen.add(pid)
-      const description = [r.desc, r.text].filter(Boolean).join(' ').slice(0, 2000)
+
+      const description = [desc, text].filter(Boolean).join(' ').slice(0, 2000)
+      const abs = (u: string) => (u && !/^https?:\/\//.test(u) ? baseUrl + (u.startsWith('/') ? '' : '/') + u : u)
+
       results.push({
         source: 'platform2',
         sourceProductId: pid,
-        name: r.name,
+        name,
         operator: '',
         category: '精选',
-        taocan: r.desc,
+        taocan: desc,
         description,
-        rawText: buildRawText(r.name, r.desc, r.text),
-        imageUrl: r.img,
-        buyUrl: r.buy ? (r.buy.startsWith('http') ? r.buy : baseUrl + (r.buy.startsWith('/') ? '' : '/') + r.buy) : '',
-        shareUrl: r.buy ? (r.buy.startsWith('http') ? r.buy : baseUrl + (r.buy.startsWith('/') ? '' : '/') + r.buy) : '',
+        rawText: buildRawText(name, desc, text),
+        imageUrl: abs(img),
+        buyUrl: abs(buy),
+        shareUrl: abs(buy),
         sales: 0,
       })
-    }
-  } finally {
-    await page.close()
+    })
+    
+    if (results.length > 0) break
   }
+
+  // 如果 HTML 中没有数据，尝试常见的 API 端点
+  if (results.length === 0) {
+    const apiEndpoints = [
+      '/api/products',
+      '/api/goods/list',
+      '/api/v1/products',
+      '/product/list',
+    ]
+
+    for (const endpoint of apiEndpoints) {
+      try {
+        const data = await $fetch(baseUrl + endpoint)
+        if (data && typeof data === 'object') {
+          const items = data.data || data.items || data.list || data.products || []
+          for (const item of items) {
+            const name = item.name || item.title || item.productName || ''
+            if (!name) continue
+            const pid = item.id || item.productId || item.pid || name
+            if (seen.has(String(pid))) continue
+            seen.add(String(pid))
+
+            results.push({
+              source: 'platform2',
+              sourceProductId: String(pid),
+              name,
+              operator: '',
+              category: '精选',
+              taocan: item.desc || item.description || '',
+              description: item.desc || item.description || '',
+              rawText: buildRawText(name, item.desc || '', item.description || ''),
+              imageUrl: item.image || item.img || item.imageUrl || '',
+              buyUrl: item.buyUrl || item.url || '',
+              shareUrl: item.shareUrl || item.buyUrl || '',
+              sales: item.sales || 0,
+            })
+          }
+          if (results.length > 0) break
+        }
+      } catch {
+        continue
+      }
+    }
+  }
+
   return results
 }

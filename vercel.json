@@ -1,0 +1,8 @@
+{
+  "framework": "nuxtjs",
+  "installCommand": "npm install",
+  "buildCommand": "nuxt build",
+  "crons": {
+    "/api/cron/sync": "0 3 * * *"
+  }
+}

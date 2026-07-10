@@ -4,10 +4,12 @@ import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 
 export default defineNuxtConfig({
   devtools: { enabled: false },
-  ssr: {
-    noExternal: ['naive-ui', '@css-render/vue3-ssr'],
-    transpile: ['naive-ui', '@css-render/vue3-ssr'],
+  ssr: true,
+  nitro: {
+    preset: 'vercel',
   },
+  noExternal: ['naive-ui', '@css-render/vue3-ssr'],
+  transpile: ['naive-ui', '@css-render/vue3-ssr'],
   css: ['~/assets/css/main.css'],
   vite: {
     plugins: [
@@ -22,6 +24,7 @@ export default defineNuxtConfig({
     aiApiKey: process.env.AI_API_KEY || '',
     aiBaseUrl: process.env.AI_BASE_URL || 'https://dashscope.aliyuncs.com/compatible-mode/v1',
     aiModel: process.env.AI_MODEL || 'qwen-plus',
+    adminPassword: process.env.ADMIN_PASSWORD || 'admin123',
     scrapeHeadless: (process.env.SCRAPE_HEADLESS ?? 'true') === 'true',
     platform1: {
       name: process.env.P1_NAME || '畅行号卡',
@@ -32,6 +35,9 @@ export default defineNuxtConfig({
       name: process.env.P2_NAME || '木子号卡',
       baseUrl: process.env.P2_BASE_URL || 'https://leemuzi.hemorn.cn',
     },
+  },
+  experimental: {
+    appManifest: false,
   },
   compatibilityDate: '2024-11-09',
 })
