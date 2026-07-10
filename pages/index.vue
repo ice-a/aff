@@ -1,8 +1,8 @@
 <template>
   <div>
     <section class="hero">
-      <h1>精选流量卡</h1>
-      <p>聚合多平台号卡资源，帮你找到最划算的那张卡。</p>
+      <h1>一张好卡，从这里开始</h1>
+      <p>聚合多平台流量卡资源，AI 智能对比，帮你找到最划算的那张卡</p>
       <div class="hero-search">
         <n-input
           v-model:value="q"

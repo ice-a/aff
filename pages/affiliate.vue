@@ -2,7 +2,7 @@
   <div>
     <section class="hero">
       <h1>精选推荐</h1>
-      <p>优质资源合集，分类整理，方便查找。</p>
+      <p>优质资源合集，分类整理，方便查找</p>
     </section>
 
     <div v-if="loading" class="sections">
@@ -31,7 +31,7 @@
           >
             <div class="link-info">
               <div class="link-name">
-                <span v-if="link.icon" class="link-icon">{{ link.icon }}</span>
+                <span class="link-icon">{{ getLinkIcon(link) }}</span>
                 {{ link.name }}
               </div>
               <div v-if="link.description" class="link-desc">{{ link.description }}</div>
@@ -49,6 +49,21 @@ import * as naive from 'naive-ui'
 const { NCard, NSkeleton, NEmpty } = naive
 const categories = ref<any[]>([])
 const loading = ref(true)
+
+const linkIcons = ['🚀', '⚡', '💎', '🔥', '✨', '🎯', '💰', '🎁', '🌟', '📱', '🔗', '📶', '💡', '🏆', '🎉']
+
+function hashCode(str: string) {
+  let hash = 0
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash + str.charCodeAt(i)) | 0
+  }
+  return Math.abs(hash)
+}
+
+function getLinkIcon(link: any) {
+  if (link.icon) return link.icon
+  return linkIcons[hashCode(link.name || link.url) % linkIcons.length]
+}
 
 async function load() {
   loading.value = true

@@ -3,8 +3,8 @@
     <header class="topbar">
       <div class="topbar-inner container">
         <NuxtLink to="/" class="brand">
-          <span class="brand-logo">卡</span>
-          <span class="brand-name">流量卡优选中心</span>
+          <span class="brand-logo">探</span>
+          <span class="brand-name">卡探</span>
         </NuxtLink>
         <nav class="nav">
           <NuxtLink to="/" class="nav-link">流量卡</NuxtLink>
@@ -23,7 +23,7 @@
     </main>
 
     <footer class="footer">
-      <p>优选中心 · 聚合多平台优质资源，数据经 AI 提取与对比，办理请前往原平台</p>
+      <p>卡探 · 聚合多平台优质流量卡，AI 智能对比，帮你找到最适合的那张卡</p>
     </footer>
   </div>
 </template>
