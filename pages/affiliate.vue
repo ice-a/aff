@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import naive from 'naive-ui'
+import * as naive from 'naive-ui'
 const { NCard, NSkeleton, NEmpty } = naive
 const categories = ref<any[]>([])
 const loading = ref(true)

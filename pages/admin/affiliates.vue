@@ -119,7 +119,7 @@
 </template>
 
 <script setup lang="ts">
-import naive from 'naive-ui'
+import * as naive from 'naive-ui'
 const { useMessage, NSpace, NButton, NSpin, NEmpty, NCard, NPopconfirm, NModal, NForm, NFormItem, NInput, NInputNumber, NAlert, NText } = naive
 
 definePageMeta({

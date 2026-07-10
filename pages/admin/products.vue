@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { h } from 'vue'
-import naive from 'naive-ui'
+import * as naive from 'naive-ui'
 const { NInput, NButton, NPopconfirm, NSpace, useMessage, NDataTable } = naive
 
 definePageMeta({

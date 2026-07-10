@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import naive from 'naive-ui'
+import * as naive from 'naive-ui'
 const { NCard, NButton } = naive
 definePageMeta({
   layout: 'admin',

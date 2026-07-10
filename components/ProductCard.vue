@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import naive from 'naive-ui'
+import * as naive from 'naive-ui'
 const { useMessage, NCard, NTag, NButton } = naive
 const props = defineProps<{ product: any }>()
 const p = computed(() => props.product)

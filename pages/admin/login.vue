@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import naive from 'naive-ui'
+import * as naive from 'naive-ui'
 const { useMessage, NCard, NForm, NFormItem, NInput, NButton } = naive
 
 definePageMeta({
