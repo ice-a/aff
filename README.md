@@ -45,23 +45,6 @@ npm run dev                 # 启动开发服务器 http://localhost:3000
 
 在 `.env` 填入 `AI_API_KEY` 与对应 `AI_BASE_URL` / `AI_MODEL`。不填则用内置正则规则提取有效期/流量等。
 
-## 从源平台抓取真实数据
-
-点击页面右上角「同步最新数据」，或：
-
-```bash
-curl -X POST http://localhost:3000/api/scrape
-```
-
-抓取采用 **Playwright 无头浏览器**加载源平台页面（契合「爬网页 HTML」），由页面自身完成鉴权后从渲染后的 DOM 提取。
-两个源平台：
-
-- 平台1 畅行号卡 `https://260709.chshebei.cn`（商品在 `/ProductEn/Index/{店铺id}` 渲染）
-- 平台2 木子号卡 `https://leemuzi.hemorn.cn`（Vue SPA，`#productList` 渲染）
-
-> 若源平台需要登录态/Token，可在 `nuxt.config.ts` 的 `platform1/platform2` 中补充鉴权参数，
-> 或在 `server/services/scraper/*.ts` 注入 Cookie 后重试。
-
 ## 生产构建
 
 ```bash

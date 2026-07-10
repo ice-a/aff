@@ -1,6 +1,7 @@
 import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
+  modules: ['@vercel/analytics'],
   devtools: { enabled: false },
   ssr: true,
   nitro: {

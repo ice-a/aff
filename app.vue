@@ -1,23 +1,19 @@
 <template>
-  <ClientOnly>
-    <n-config-provider :theme-overrides="themeOverrides">
-      <n-message-provider>
-        <n-dialog-provider>
-          <NuxtLayout>
-            <NuxtPage />
-          </NuxtLayout>
-        </n-dialog-provider>
-      </n-message-provider>
-    </n-config-provider>
-    <template #fallback>
-      <div class="loading-screen">
-        <p>加载中…</p>
-      </div>
-    </template>
-  </ClientOnly>
+  <n-config-provider :theme-overrides="themeOverrides">
+    <n-message-provider>
+      <n-dialog-provider>
+        <NuxtLayout>
+          <NuxtPage />
+        </NuxtLayout>
+      </n-dialog-provider>
+    </n-message-provider>
+  </n-config-provider>
 </template>
 
 <script setup lang="ts">
+import * as naive from 'naive-ui'
+const { NConfigProvider, NMessageProvider, NDialogProvider } = naive
+
 const themeOverrides = {
   common: {
     primaryColor: '#3b6ef6',

@@ -12,6 +12,7 @@
     "postinstall": "patch-package && nuxt prepare"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "cheerio": "^1.2.0",
     "mongodb-memory-server": "^10.4.3",
     "mongoose": "^8.8.1",
