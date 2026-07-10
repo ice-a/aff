@@ -119,7 +119,8 @@
 </template>
 
 <script setup lang="ts">
-import { useMessage } from 'naive-ui'
+import naive from 'naive-ui'
+const { useMessage } = naive
 
 definePageMeta({
   layout: 'admin',

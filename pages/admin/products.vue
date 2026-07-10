@@ -23,7 +23,8 @@
 
 <script setup lang="ts">
 import { h } from 'vue'
-import { NButton, NPopconfirm, NSpace, useMessage } from 'naive-ui'
+import naive from 'naive-ui'
+const { NButton, NPopconfirm, NSpace, useMessage } = naive
 import type { DataTableColumns } from 'naive-ui'
 
 definePageMeta({
