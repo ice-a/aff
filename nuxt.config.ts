@@ -1,6 +1,4 @@
 import { defineNuxtConfig } from 'nuxt/config'
-import Components from 'unplugin-vue-components/vite'
-import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 
 export default defineNuxtConfig({
   devtools: { enabled: false },
@@ -12,11 +10,9 @@ export default defineNuxtConfig({
   transpile: ['naive-ui', '@css-render/vue3-ssr'],
   css: ['~/assets/css/main.css'],
   vite: {
-    plugins: [
-      Components({
-        resolvers: [NaiveUiResolver()],
-      }),
-    ],
+    optimizeDeps: {
+      include: ['naive-ui'],
+    },
   },
   runtimeConfig: {
     mongodbUri: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017',

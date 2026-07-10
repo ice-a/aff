@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import naive from 'naive-ui'
-const { useMessage, useDialog } = naive
+const { useMessage, useDialog, NCard, NDescriptions, NDescriptionsItem, NSpace, NButton } = naive
 
 definePageMeta({
   layout: 'admin',

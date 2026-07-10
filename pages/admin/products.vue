@@ -24,8 +24,7 @@
 <script setup lang="ts">
 import { h } from 'vue'
 import naive from 'naive-ui'
-const { NButton, NPopconfirm, NSpace, useMessage } = naive
-import type { DataTableColumns } from 'naive-ui'
+const { NInput, NButton, NPopconfirm, NSpace, useMessage, NDataTable } = naive
 
 definePageMeta({
   layout: 'admin',
@@ -53,7 +52,7 @@ const pagination = reactive({
   },
 })
 
-const columns: DataTableColumns<any> = [
+const columns: any[] = [
   {
     title: '商品名称',
     key: 'name',

@@ -76,6 +76,8 @@
 </template>
 
 <script setup lang="ts">
+import naive from 'naive-ui'
+const { NInput, NButton, NRadioGroup, NRadioButton, NSelect, NCard, NSkeleton, NEmpty } = naive
 const q = ref('')
 const operator = ref('')
 const trafficRange = ref<string | null>(null)

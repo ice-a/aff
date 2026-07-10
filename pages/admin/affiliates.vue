@@ -120,7 +120,7 @@
 
 <script setup lang="ts">
 import naive from 'naive-ui'
-const { useMessage } = naive
+const { useMessage, NSpace, NButton, NSpin, NEmpty, NCard, NPopconfirm, NModal, NForm, NFormItem, NInput, NInputNumber, NAlert, NText } = naive
 
 definePageMeta({
   layout: 'admin',

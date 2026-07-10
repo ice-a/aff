@@ -76,7 +76,7 @@
 
 <script setup lang="ts">
 import naive from 'naive-ui'
-const { useMessage } = naive
+const { useMessage, NCard, NTag, NButton } = naive
 const props = defineProps<{ product: any }>()
 const p = computed(() => props.product)
 const message = useMessage()

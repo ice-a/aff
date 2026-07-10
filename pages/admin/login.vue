@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import naive from 'naive-ui'
-const { useMessage } = naive
+const { useMessage, NCard, NForm, NFormItem, NInput, NButton } = naive
 
 definePageMeta({
   layout: false,
