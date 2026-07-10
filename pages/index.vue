@@ -1,6 +1,19 @@
 <template>
   <div>
     <section class="hero">
+      <div class="hero-icon">
+        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="16" y="8" width="48" height="64" rx="8" fill="url(#grad)" />
+          <path d="M40 28 L48 40 H32 L40 28Z" fill="#fff" opacity="0.9"/>
+          <circle cx="40" cy="52" r="4" fill="#fff" opacity="0.7"/>
+          <defs>
+            <linearGradient id="grad" x1="16" y1="8" x2="64" y2="72">
+              <stop offset="0%" stop-color="#3b6ef6"/>
+              <stop offset="100%" stop-color="#7b5cf6"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
       <h1>一张好卡，从这里开始</h1>
       <p>聚合多平台流量卡资源，AI 智能对比，帮你找到最划算的那张卡</p>
       <div class="hero-search">
@@ -150,6 +163,17 @@ onMounted(load)
 </script>
 
 <style scoped>
+.hero-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 18px;
+  animation: float 3s ease-in-out infinite;
+}
+.hero-icon svg { width: 100%; height: 100%; filter: drop-shadow(0 8px 24px rgba(59,110,246,0.3)); }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
 .hero-search { max-width: 560px; }
 .toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
 .count { color: var(--muted); font-size: 13px; margin-left: auto; }
