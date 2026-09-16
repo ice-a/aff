@@ -28,6 +28,7 @@
                 :href="link.url"
                 target="_blank"
                 class="quick-link"
+                @click="recordInteraction(link.id)"
               >
                 <i :class="['fas', link.icon || 'fa-link']" :style="{ color: link.color }"></i>
                 <span>{{ link.title }}</span>
@@ -48,6 +49,7 @@
                 :href="link.url"
                 target="_blank"
                 class="quick-link"
+                @click="recordInteraction(link.id)"
               >
                 <i :class="['fas', link.icon || 'fa-link']" :style="{ color: link.color }"></i>
                 <span>{{ link.title }}</span>
@@ -74,12 +76,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { affLinks } from '../config/links.config'
+import { useLinkStats } from '../composables/useLinkStats'
+
+const { clickStats, recentVisits, clearStats, recordInteraction } = useLinkStats()
 
 const showQuickPanel = ref(false)
-const recentVisits = ref<string[]>([])
-const clickStats = ref<Record<string, number>>({})
 
 const recentLinks = computed(() => {
   return recentVisits.value
@@ -115,26 +118,6 @@ const exportData = () => {
   URL.revokeObjectURL(url)
 }
 
-const clearStats = () => {
-  if (confirm('确定要清除所有统计数据吗？')) {
-    localStorage.removeItem('clickStats')
-    localStorage.removeItem('recentVisits')
-    clickStats.value = {}
-    recentVisits.value = []
-  }
-}
-
-onMounted(() => {
-  const stats = localStorage.getItem('clickStats')
-  if (stats) {
-    clickStats.value = JSON.parse(stats)
-  }
-  
-  const recent = localStorage.getItem('recentVisits')
-  if (recent) {
-    recentVisits.value = JSON.parse(recent)
-  }
-})
 </script>
 
 <style scoped>

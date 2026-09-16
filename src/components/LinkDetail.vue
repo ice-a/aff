@@ -103,9 +103,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import type { AffLink, Category } from '../config/links.config'
 import { getRandomGradient } from '../config/links.config'
+import { useLinkStats } from '../composables/useLinkStats'
 
 interface Props {
   link: AffLink
@@ -114,8 +115,10 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const { getClickCount } = useLinkStats()
+
 const copied = ref(false)
-const clickCount = ref(0)
+const clickCount = computed(() => getClickCount(props.link.id))
 
 // 头部背景 - 使用渐变色
 const headerStyle = computed(() => {
@@ -148,11 +151,6 @@ const copyToClipboard = () => {
 
 const visitLink = () => {
   window.open(props.link.url, '_blank')
-  // 记录点击
-  const stats = JSON.parse(localStorage.getItem('clickStats') || '{}')
-  stats[props.link.id] = (stats[props.link.id] || 0) + 1
-  localStorage.setItem('clickStats', JSON.stringify(stats))
-  clickCount.value = stats[props.link.id]
 }
 
 const shareLink = async () => {
@@ -171,11 +169,6 @@ const shareLink = async () => {
     copyToClipboard()
   }
 }
-
-onMounted(() => {
-  const stats = JSON.parse(localStorage.getItem('clickStats') || '{}')
-  clickCount.value = stats[props.link.id] || 0
-})
 </script>
 
 <style scoped>

@@ -12,13 +12,20 @@
 - **毛玻璃效果** - 现代化的玻璃拟态设计
 - **渐变配色** - 优雅的渐变色主题
 - **动画过渡** - 流畅的页面切换和交互动画
-- **随机背景** - 每张卡片都有独特的随机背景图
+- **稳定的随机渐变背景** - 通过 `getRandomGradient(id)` 按链接 ID 哈希从 `gradientColors` 数组**确定性**选取 CSS `linear-gradient`，每张卡片的渐变固定不变（刷新/重渲染后保持一致，不会每次随机变化）
 
 ### 🗂️ 组织管理
-- **分类筛选** - 支持7种预设分类（VPS、域名、CDN、云服务、工具、金融、其他）
+- **分类筛选** - 支持 11 种预设分类（虚拟币、VPN服务、VPS/服务器、域名注册、CDN加速、云服务、开发工具、金融服务、其他推荐、影视、爱喝水的木子）
 - **搜索功能** - 实时搜索标题、描述和标签
-- **视图切换** - 网格视图和列表视图自由切换
+- **视图切换** - 网格视图和**列表视图**自由切换（列表视图现已可用，`:is-list-view` 正确传递给 `LinkCard`）
 - **标签系统** - 为每个链接添加自定义标签
+
+### ⚡ 快速访问面板
+`QuickAccess.vue` 提供一个右下角悬浮的快捷面板，包含：
+- **最近访问** - 基于 `recentVisits` 展示最近浏览过的链接
+- **热门推荐** - 按点击数从高到低排序的链接
+- **导出数据** - 将链接与统计数据导出为 JSON 备份文件
+- **清除统计** - 一键清空所有点击与访问记录
 
 ### 💫 交互体验
 - **悬停详情** - 鼠标悬停显示完整信息和奖励详情
@@ -35,20 +42,34 @@
 
 ### 安装依赖
 
+使用 npm：
+
 ```bash
 npm install
 ```
 
+或使用 pnpm（本项目推荐使用 pnpm）：
+
+```bash
+pnpm install
+```
+
+> ⚠️ **pnpm 用户注意**：若执行 `pnpm i` 时报 `ERR_PNPM_IGNORED_BUILDS`（通常是 esbuild 未被允许构建），请运行 `pnpm approve-builds` 批准 esbuild 的构建脚本，或在 `package.json` 中添加：
+> ```json
+> "pnpm": { "onlyBuiltDependencies": ["esbuild"] }
+> ```
+> 然后重新执行 `pnpm install`。否则 Vite 将因 esbuild 未正确构建而无法启动。
+
 ### 开发模式
 
 ```bash
-npm run dev
+npm run dev      # 或 pnpm dev
 ```
 
 ### 构建生产版本
 
 ```bash
-npm run build
+npm run build    # 或 pnpm build
 ```
 
 构建后的文件位于 `dist` 目录，可直接部署到任何静态托管服务。
@@ -56,19 +77,22 @@ npm run build
 ## 📁 项目结构
 
 ```
-├── public/                 # 静态资源
 ├── src/
-│   ├── components/         # Vue组件
-│   │   ├── LinkCard.vue   # 链接卡片组件
-│   │   └── LinkDetail.vue # 详情弹窗组件
+│   ├── components/
+│   │   ├── LinkCard.vue       # 链接卡片组件
+│   │   ├── LinkDetail.vue     # 详情弹窗组件
+│   │   └── QuickAccess.vue    # 快速访问面板（最近访问/热门推荐/导出/清除）
+│   ├── composables/
+│   │   └── useLinkStats.ts    # 共享统计 store（点击数 + 最近访问，模块级单例）
 │   ├── config/
-│   │   └── links.config.ts # 链接配置文件
-│   ├── App.vue            # 主应用组件
-│   ├── main.ts            # 入口文件
-│   └── style.css          # 全局样式
+│   │   └── links.config.ts    # 链接与分类配置（含 gradientColors / getRandomGradient）
+│   ├── App.vue                # 主应用组件
+│   ├── main.ts                # 入口文件
+│   └── style.css              # 全局样式
 ├── index.html
 ├── package.json
 ├── tsconfig.json
+├── tsconfig.node.json
 └── vite.config.ts
 ```
 
@@ -109,14 +133,14 @@ export const categories: Category[] = [
 ]
 ```
 
-### 自定义随机背景API
+### 自定义卡片渐变背景
 
-在 `links.config.ts` 中修改 `randomImageAPIs` 数组：
+卡片背景并非随机图片，而是由 `getRandomGradient(id)` 根据链接 ID 的哈希值，从 `links.config.ts` 中的 `gradientColors` 数组确定性地挑选一个 CSS 渐变。如需调整配色，直接编辑 `gradientColors` 数组即可——每个 ID 对应的渐变是固定不变的。
 
 ```typescript
-export const randomImageAPIs = [
-  'https://your-image-api.com/400/300?random=',
-  'https://another-api.com/image?seed='
+export const gradientColors = [
+  'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  // ...更多渐变组合
 ]
 ```
 
@@ -136,7 +160,12 @@ export const randomImageAPIs = [
 
 ## 📊 数据统计
 
-点击统计数据存储在浏览器的 `localStorage` 中，键名为 `clickStats`。
+点击与访问数据存储在浏览器的 `localStorage` 中，使用两个独立的键名：
+
+- `clickStats` - 每个链接的点击次数（以链接 ID 为键的计数字典）
+- `recentVisits` - 最近浏览过的链接 ID 列表（去重并限制长度）
+
+上述数据由 `src/composables/useLinkStats.ts` 统一集中管理。该模块以**模块级单例**形式导出，确保 `App`、`LinkDetail` 和 `QuickAccess` 共享同一份响应式状态：任何一处记录的点击/访问都会实时反映到总点击数、详情弹窗的点击次数、快速访问面板的「最近访问」与「热门推荐」中。
 
 ## 🔒 隐私说明
 
@@ -153,7 +182,7 @@ export const randomImageAPIs = [
 - **Cloudflare Pages** - 自动部署
 
 ### 自定义域名
-1. 构建项目: `npm run build`
+1. 构建项目: `npm run build`（或 `pnpm build`）
 2. 将 `dist` 文件夹内容上传到服务器
 3. 配置 nginx/apache 指向该目录
 
@@ -183,7 +212,7 @@ MIT License
 ## 💡 小贴士
 
 1. **定期更新链接** - 检查链接是否有效，及时更新失效链接
-2. **优化图片加载** - 可以替换成自己的 CDN 图片以加快加载速度
+2. **优化体验** - 调整 `gradientColors` 改变卡片渐变观感，无需额外网络请求
 3. **SEO优化** - 修改 `index.html` 中的 meta 标签提升搜索引擎排名
 4. **添加分析** - 可以集成 Google Analytics 或百度统计
 

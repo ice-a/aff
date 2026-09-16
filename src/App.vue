@@ -67,21 +67,15 @@
         >
           <i :class="['fas', category.icon]"></i>
           <span>{{ category.name }}</span>
-          <span class="count">{{ getCategoryCount(category.id) }}</span>
+          <span class="count">{{ categoryCountMap.get(category.id) }}</span>
         </button>
       </div>
     </div>
     
     <!-- 主内容区 -->
     <main class="main-content">
-      <!-- 加载状态 -->
-      <div v-if="loading" class="loading-container">
-        <div class="loading-spinner"></div>
-        <p>加载中...</p>
-      </div>
-      
       <!-- 空状态 -->
-      <div v-else-if="displayedLinks.length === 0" class="empty-state">
+      <div v-if="filteredLinks.length === 0" class="empty-state">
         <i class="fas fa-search"></i>
         <h3>没有找到相关链接</h3>
         <p>尝试使用其他关键词搜索</p>
@@ -91,13 +85,14 @@
       <!-- 链接卡片网格 -->
       <div v-else :class="['links-container', viewMode]">
         <div 
-          v-for="link in displayedLinks" 
+          v-for="link in filteredLinks" 
           :key="link.id"
           class="link-card-wrapper"
         >
           <LinkCard 
             :link="link"
-            :category="getCategory(link.category)"
+            :category="categoryMap.get(link.category)"
+            :is-list-view="viewMode === 'list'"
             @click="handleCardClick(link)"
             @copy="copyLink(link)"
           />
@@ -131,7 +126,7 @@
           <button class="modal-close" @click="closeModal">
             <i class="fas fa-times"></i>
           </button>
-          <LinkDetail :link="selectedLink" :category="getCategory(selectedLink.category)" />
+          <LinkDetail :link="selectedLink" :category="categoryMap.get(selectedLink.category)" />
         </div>
       </div>
     </transition>
@@ -147,14 +142,15 @@ import { affLinks, categories, type AffLink, type Category } from './config/link
 import LinkCard from './components/LinkCard.vue'
 import LinkDetail from './components/LinkDetail.vue'
 import QuickAccess from './components/QuickAccess.vue'
+import { useLinkStats } from './composables/useLinkStats'
+
+const { totalClicks, recordInteraction } = useLinkStats()
 
 const searchQuery = ref('')
 const selectedCategory = ref('all')
 const viewMode = ref<'grid' | 'list'>('grid')
-const loading = ref(false)
 const isScrolled = ref(false)
 const selectedLink = ref<AffLink | null>(null)
-const clickStats = ref<Record<string, number>>({})
 const debouncedSearchQuery = ref('')
 let searchTimeout: number | null = null
 
@@ -193,25 +189,23 @@ const filteredLinks = computed(() => {
   return links
 })
 
-const displayedLinks = computed(() => filteredLinks.value)
-
-const totalClicks = computed(() => {
-  return Object.values(clickStats.value).reduce((sum, count) => sum + count, 0)
+const categoryMap = computed(() => {
+  const map = new Map<string, Category>()
+  categories.forEach(c => map.set(c.id, c))
+  return map
+})
+const categoryCountMap = computed(() => {
+  const map = new Map<string, number>()
+  affLinks.forEach(link => {
+    map.set(link.category, (map.get(link.category) || 0) + 1)
+  })
+  return map
 })
 
 const lastUpdateTime = computed(() => {
-  const dates = affLinks.map(link => new Date(link.createdAt))
-  const latest = new Date(Math.max(...dates.map(d => d.getTime())))
-  return latest.toLocaleDateString('zh-CN')
+  const latest = affLinks.reduce((max, link) => Math.max(max, new Date(link.createdAt).getTime()), 0)
+  return new Date(latest).toLocaleDateString('zh-CN')
 })
-
-const getCategory = (id: string): Category | undefined => {
-  return categories.find(c => c.id === id)
-}
-
-const getCategoryCount = (categoryId: string): number => {
-  return affLinks.filter(link => link.category === categoryId).length
-}
 
 const clearSearch = () => {
   searchQuery.value = ''
@@ -225,8 +219,7 @@ const clearFilters = () => {
 }
 
 const handleCardClick = (link: AffLink) => {
-  clickStats.value[link.id] = (clickStats.value[link.id] || 0) + 1
-  localStorage.setItem('clickStats', JSON.stringify(clickStats.value))
+  recordInteraction(link.id)
   selectedLink.value = link
 }
 
@@ -261,16 +254,6 @@ const handleScroll = () => {
 }
 
 onMounted(() => {
-  const saved = localStorage.getItem('clickStats')
-  if (saved) {
-    clickStats.value = JSON.parse(saved)
-  }
-  
-  loading.value = true
-  setTimeout(() => {
-    loading.value = false
-  }, 300)
-  
   window.addEventListener('scroll', handleScroll, { passive: true })
 })
 

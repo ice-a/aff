@@ -138,7 +138,6 @@ const visitLink = () => {
   height: 380px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   background: var(--bg-card);
-  will-change: transform;
   transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
 }
 
